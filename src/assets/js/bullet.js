@@ -6,7 +6,7 @@ import {Texture, Sprite} from 'pixi'
 const bulletTexture = Texture.fromImage('assets/images/sprites/noj.png');
 const bulletSpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .2, y: .2} };
 
-export class Bullet {
+export default class Bullet {
   presetSprite({x, y, angle}) {
     this.sprite = new Sprite(bulletTexture);
     Object.assign(this.sprite, bulletSpriteDefaults);

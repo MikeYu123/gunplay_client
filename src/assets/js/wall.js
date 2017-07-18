@@ -7,7 +7,7 @@ const wallTexture = Texture.fromImage('assets/images/sprites/brick_wall.png');
 const wallSpriteDefaults = { anchor: { x: .5, y: .5 }};
 
 
-export class Wall {
+export default class Wall {
   presetSprite({x, y, width, height}) {
     this.sprite = new TilingSprite(wallTexture, width, height);
     Object.assign(this.sprite, wallSpriteDefaults);

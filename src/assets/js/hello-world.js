@@ -1,11 +1,13 @@
 import pixi from 'pixi'
 import Door from './door'
+import ControlsRegistry from './controls-registry'
 export default class HelloWorld {
     constructor (greetings) {
         this.greetings = greetings;
     }
 
     sayHello() {
+        window.a = new ControlsRegistry();
         console.log(new Door({id: 1, x: 10, y: 20}));
         return this.greetings;
     }
@@ -42,8 +44,8 @@ export default class HelloWorld {
 // var arrayBuffer;
 //
 // initNetwork();
-// window.addEventListener( 'keydown', onKeyDown, false );
-// window.addEventListener( 'keyup', onKeyUp, false );
+window.addEventListener( 'keydown', onKeyDown, false );
+window.addEventListener( 'keyup', onKeyUp, false );
 // window.addEventListener( 'mousemove', onDocumentMouseMove, false );
 // window.addEventListener( 'click', onClick, false);
 // init();
@@ -145,15 +147,7 @@ export default class HelloWorld {
 //     return m;
 // }
 //
-// function toDegrees (angle) {
-//     if (angle < 0)
-//         angle = Math.PI - angle;
-//     return angle * (180 / Math.PI);
-// }
-//
-// function toRadians (angle) {
-//     return angle * (Math.PI / 180);
-// }
+
 //
 // function init() {
 //     stage = new PIXI.Container();
@@ -190,23 +184,13 @@ export default class HelloWorld {
 //     click = true;
 // }
 //
-// function onKeyDown(event){
-//     var keyCode = event.keyCode;
-//     switch (keyCode) {
-//         case 87: //w
-//             keyW = true;
-//             break;
-//         case 83: //s
-//             keyS = true;
-//             break;
-//         case 65: //a
-//             keyA = true;
-//             break;
-//         case 68: //d
-//             keyD = true;
-//             break;
-//     }
-// }
+function onKeyDown({ keyCode }){
+  window.a.onKeyDown(keyCode)
+}
+
+function onKeyUp({ keyCode }){
+  window.a.onKeyUp(keyCode)
+}
 //
 // function onKeyUp(event){
 //     var keyCode = event.keyCode;

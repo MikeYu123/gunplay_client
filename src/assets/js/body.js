@@ -6,7 +6,7 @@ import {Texture, Sprite} from 'pixi'
 const bodyTexture = Texture.fromImage('assets/images/sprites/gun1.png');
 const bodySpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .2, y: .2} };
 
-export class Body {
+export default class Body {
   presetSprite({x, y, angle}) {
     this.sprite = new Sprite(bodyTexture);
     Object.assign(this.sprite, bodySpriteDefaults);
