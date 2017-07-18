@@ -13,11 +13,11 @@ const keyRight = 39;
 
 //TODO resolve name confusion(keyUp & onKeyUp)
 export default class ControlsRegisgtry {
-  constructor(){
+  constructor() {
     this.up = this.down = this.right = this.left = this.click = false
   }
 
-  click() {
+  onClick() {
     this.click = true;
   }
 
@@ -61,5 +61,17 @@ export default class ControlsRegisgtry {
         this.right = true;
         break;
     }
+  }
+
+  flush() {
+    const state = {
+      up: this.up,
+      down: this.down,
+      left: this.left,
+      right: this.right,
+      click: this.click,
+    };
+    this.click = false;
+    return state;
   }
 }

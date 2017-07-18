@@ -51,7 +51,7 @@ export default class HelloWorld {
 window.addEventListener( 'keydown', onKeyDown, false );
 window.addEventListener( 'keyup', onKeyUp, false );
 // window.addEventListener( 'mousemove', onDocumentMouseMove, false );
-// window.addEventListener( 'click', onClick, false);
+window.addEventListener( 'click', onClick, false);
 // init();
 // // animate();
 //
@@ -175,9 +175,9 @@ window.addEventListener( 'keyup', onKeyUp, false );
 //     return alp
 // }
 //
-// function onClick( event ){
-//     click = true;
-// }
+function onClick(){
+  window.a.onClick();
+}
 //
 function onKeyDown({ keyCode }){
   window.a.onKeyDown(keyCode)
