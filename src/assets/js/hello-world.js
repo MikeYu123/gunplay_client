@@ -1,6 +1,10 @@
 import pixi from 'pixi'
 import Door from './door'
 import ControlsRegistry from './controls-registry'
+import { uuid } from './utils'
+
+const defaultAddress = 'ws://0.0.0.0:8000/sock';
+
 export default class HelloWorld {
     constructor (greetings) {
         this.greetings = greetings;
@@ -52,16 +56,7 @@ window.addEventListener( 'keyup', onKeyUp, false );
 // // animate();
 //
 // function initNetwork() {
-//     socket = new WebSocket("ws://0.0.0.0:8000/sock");
-//     socket.onopen = function() {
-//         // document.title += '+c';
-//         id = Date.now();
-//         socket.send("#" + id);
-//         console.log("id sent");
-//         // animate();
-//     };
-//     socket.onclose = function() { document.title += '-c'; };
-//     socket.onmessage = levelFromYaml;
+
 // }
 //
 // function levelFromYaml(evt) {
