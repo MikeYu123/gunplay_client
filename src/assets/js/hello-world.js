@@ -1,112 +1,15 @@
 import pixi from 'pixi'
+import Door from './door'
 export default class HelloWorld {
     constructor (greetings) {
         this.greetings = greetings;
     }
 
     sayHello() {
-        console.log(new Body({id: 1, x: 10, y: 20}));
+        console.log(new Door({id: 1, x: 10, y: 20}));
         return this.greetings;
     }
 }
-
-//TODO: Move to class variables somehow
-const bodyTexture = pixi.Texture.fromImage("assets/images/sprites/gun1.png");
-const bodySpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .2, y: .2} };
-
-export class Body {
-    presetSprite({x, y, a}) {
-      this.sprite = new pixi.Sprite(bodyTexture);
-      Object.assign(this.sprite, bodySpriteDefaults);
-      Object.assign(this.sprite.position, {x, y});
-      //NOTE: -a??? Ask @bubiga
-      this.sprite.rotation = -a;
-    }
-
-    update({x, y, a}) {
-      Object.assign(this.sprite, {position: { x, y }, rotation: a});
-    }
-
-    constructor({ id, x, y, a }) {
-      this.id = id;
-      this.x = x;
-      this.y = y;
-      this.a = a;
-      this.presetSprite({x, y, a})
-    }
-}
-
-const bulletTexture = pixi.Texture.fromImage("assets/images/sprites/noj.png");
-const bulletSpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .2, y: .2} };
-
-
-export class Bullet {
-  presetSprite({x, y, a}) {
-    this.sprite = new pixi.Sprite(bulletTexture);
-    Object.assign(this.sprite, bulletSpriteDefaults);
-    Object.assign(this.sprite.position, {x, y});
-    this.sprite.rotation = a + Math.PI / 2;
-  }
-
-  update({x, y, a}) {
-    Object.assign(this.sprite, {position: { x, y }, rotation: a + Math.PI / 2});
-  }
-
-  constructor({ id, x, y, a }) {
-    this.id = id;
-    this.x = x;
-    this.y = y;
-    this.a = a;
-    this.presetSprite({x, y, a})
-  }
-}
-
-const doorTexture = pixi.Texture.fromImage("assets/images/sprites/door_wood.png");
-const dootSpriteDefaults = { anchor: { x: .5, y: .5 }};
-
-
-export class Door {
-  presetSprite({x, y, a, width, height}) {
-    this.sprite = new pixi.extras.TilingSprite(doorTexture, width, height);
-    Object.assign(this.sprite, dootSpriteDefaults);
-    Object.assign(this.sprite.position, {x, y});
-    this.sprite.rotation = a;
-  }
-
-  update({x, y, a}) {
-    Object.assign(this.sprite, {position: { x, y }, rotation: a});
-  }
-
-  constructor({ id, x, y, a, width, height }) {
-    this.id = id;
-    this.x = x;
-    this.y = y;
-    this.a = a;
-    this.presetSprite({x, y, a, width, height})
-  }
-}
-
-const wallTexture = pixi.Texture.fromImage("assets/images/sprites/brick_wall.png");
-const wallSpriteDefaults = { anchor: { x: .5, y: .5 }};
-
-
-export class Wall {
-  presetSprite({x, y, a, width, height}) {
-    this.sprite = new pixi.extras.TilingSprite(doorTexture, width, height);
-    Object.assign(this.sprite, dootSpriteDefaults);
-    Object.assign(this.sprite.position, {x, y});
-  }
-
-  constructor({ id, x, y, a, width, height}) {
-    this.id = id;
-    this.x = x;
-    this.y = y;
-    this.a = a;
-    this.presetSprite({x, y, a, width, height})
-  }
-}
-
-
 
 // var socket, socket_control, socket_update;
 //
@@ -181,28 +84,6 @@ export class Wall {
 //         arrayBuffer = this.result;
 //     };
 //     socket.onmessage = socketUpdate;
-// }
-//
-// function Body(id, x, y, a) {
-//     this.id = id;
-//     var texture = PIXI.Texture.fromImage("__assets/__sprites/gun1.png");
-//     this.sprite = new PIXI.Sprite(texture);
-//     this.sprite.anchor.x = 0.5;
-//     this.sprite.anchor.y = 0.5;
-//     this.sprite.scale.x = 0.2;
-//     this.sprite.scale.y = 0.2;
-//     this.sprite.position.x = x;
-//     this.sprite.position.y = y;
-//     this.sprite.rotation = -a;
-//     this.update = function(x, y, a) {
-//         this.sprite.position.x = x;
-//         this.sprite.position.y = y;
-//         this.sprite.rotation = a;
-//     }
-//     this.delete = function() {
-//         stage.removeChild(this.sprite);
-//     }
-//     stage.addChild(this.sprite);
 // }
 //
 
