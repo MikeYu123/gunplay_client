@@ -5,7 +5,7 @@ import {Texture, TilingSprite} from 'pixi'
 
 //TODO: these consts are bullshit as there is no class constants
 //but ne vyebyvaemsya, rabotaem s tem chto est'
-//TODO: use update with Object.observe API
+//TODO: transform update to custom setter methods
 const doorTexture = Texture.fromImage('assets/images/sprites/door_wood.png');
 const doorSpriteDefaults = { anchor: { x: .5, y: .5 }};
 
