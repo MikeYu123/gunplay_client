@@ -11,7 +11,7 @@ export default class HelloWorld {
     }
 
     sayHello() {
-        window.a = new ControlsRegistry();
+        window.a = new ControlsRegistry(uuid());
         console.log(new Door({id: 1, x: 10, y: 20}));
         return this.greetings;
     }
@@ -23,10 +23,11 @@ export default class HelloWorld {
 // var stage;
 // var body_map = new Map();
 //
-// var windowWidth = window.innerWidth;
-// var windowHeight = window.innerHeight;
-// var centerX = windowWidth / 2;
-// var centerY = windowHeight / 2;
+//TODO: move to viewport-defined object
+const windowWidth = window.innerWidth;
+const windowHeight = window.innerHeight;
+const centerX = windowWidth / 2;
+const centerY = windowHeight / 2;
 //
 // var keyW = false;
 // var keyS = false;
@@ -50,7 +51,7 @@ export default class HelloWorld {
 // initNetwork();
 window.addEventListener( 'keydown', onKeyDown, false );
 window.addEventListener( 'keyup', onKeyUp, false );
-// window.addEventListener( 'mousemove', onDocumentMouseMove, false );
+window.addEventListener( 'mousemove', onDocumentMouseMove, false );
 window.addEventListener( 'click', onClick, false);
 // init();
 // // animate();
@@ -144,36 +145,36 @@ window.addEventListener( 'click', onClick, false);
 //
 
 //
-// function init() {
-//     stage = new PIXI.Container();
-//     renderer = PIXI.autoDetectRenderer(windowWidth, windowHeight, { transparent: true });
-//     document.body.appendChild(renderer.view);
+function init() {
+    stage = new PIXI.Container();
+    renderer = PIXI.autoDetectRenderer(windowWidth, windowHeight, { transparent: true });
+    document.body.appendChild(renderer.view);
+
+    // var ground = PIXI.Texture.fromImage("__assets/__sprites/floor.jpg");
+    // var g = new PIXI.Sprite(ground);
+    // g.position.x = -256;
+    // g.position.y = -256;
+    //
+    // stage.addChild(g);
+    //
+    // window.onbeforeunload = function (evt) {
+    //     socket.send('~' + id);
+    //     // socket.onclose
+    //     socket.close();
+    //     return;
+    // }
+}
 //
-//     var ground = PIXI.Texture.fromImage("__assets/__sprites/floor.jpg");
-//     var g = new PIXI.Sprite(ground);
-//     g.position.x = -256;
-//     g.position.y = -256;
 //
-//     stage.addChild(g);
-//
-//     window.onbeforeunload = function (evt) {
-//         socket.send('~' + id);
-//         // socket.onclose
-//         socket.close();
-//         return;
-//     }
-// }
-//
-//
-// function onDocumentMouseMove( event ) {
-//     var x = event.clientX - centerX;
-//     var y = centerY - event.clientY;
-//     var l = Math.sqrt( x * x + y * y);
-//     var alp = Math.acos( x / l );
-//     alp = y > 0 ? alp : 2 * Math.PI - alp;
-//     angle = alp;
-//     return alp
-// }
+function onDocumentMouseMove( event ) {
+    const {clientX, clientY} = event;
+    const dx = clientX - centerX;
+    const dy = centerY - clientY;
+    const l = Math.sqrt( dx * dx + dy * dy);
+    const alp = dy > 0 ? Math.acos( dx / l ) : 2 * Math.PI - Math.acos( dx / l );
+    //todo:  angle = alp;
+    window.a.setAngle(alp);
+}
 //
 function onClick(){
   window.a.onClick();
@@ -186,24 +187,6 @@ function onKeyDown({ keyCode }){
 function onKeyUp({ keyCode }){
   window.a.onKeyUp(keyCode)
 }
-//
-// function onKeyUp(event){
-//     var keyCode = event.keyCode;
-//     switch (keyCode) {
-//         case 87: //w
-//             keyW = false;
-//             break;
-//         case 83: //s
-//             keyS = false;
-//             break;
-//         case 65: //a
-//             keyA = false;
-//             break;
-//         case 68: //d
-//             keyD = false;
-//             break;
-//     }
-// }
 //
 // function animate() {
 //     requestAnimationFrame( animate );
