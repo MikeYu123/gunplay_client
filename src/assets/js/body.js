@@ -3,7 +3,8 @@
  */
 import {Texture, Sprite} from 'pixi'
 
-const bodyTexture = Texture.fromImage('assets/images/sprites/gun1.png');
+const bodyTexture = Texture.fromImage('./gun1.png');
+console.log(bodyTexture);
 const bodySpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .2, y: .2} };
 
 export default class Body {

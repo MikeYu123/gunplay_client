@@ -1,7 +1,9 @@
 import pixi from 'pixi'
 import Door from './door'
+import Body from './body'
 import ControlsRegistry from './controls-registry'
 import { uuid } from './utils'
+import SocketControl from './socket-control'
 
 const defaultAddress = 'ws://0.0.0.0:8000/sock';
 
@@ -12,7 +14,7 @@ export default class HelloWorld {
 
     sayHello() {
         window.a = new ControlsRegistry(uuid());
-        console.log(new Door({id: 1, x: 10, y: 20}));
+        init();
         return this.greetings;
     }
 }
@@ -146,16 +148,17 @@ window.addEventListener( 'click', onClick, false);
 
 //
 function init() {
-    stage = new PIXI.Container();
-    renderer = PIXI.autoDetectRenderer(windowWidth, windowHeight, { transparent: true });
+    const stage = new pixi.Stage();
+    const renderer = new pixi.autoDetectRenderer(windowWidth, windowHeight, null, {transparent: true});
+    console.log(renderer);
     document.body.appendChild(renderer.view);
 
-    // var ground = PIXI.Texture.fromImage("__assets/__sprites/floor.jpg");
-    // var g = new PIXI.Sprite(ground);
-    // g.position.x = -256;
-    // g.position.y = -256;
-    //
-    // stage.addChild(g);
+    const g = new Body({id: 1, x: 400, y: 300, angle: 0});
+
+    window.socketControl = new SocketControl({address: 'ws://localhost:8090/'});
+
+    stage.addChild(g.sprite);
+    renderer.render(stage);
     //
     // window.onbeforeunload = function (evt) {
     //     socket.send('~' + id);

@@ -3,11 +3,25 @@
  */
 
 export default class SocketControl {
-  constructor({address}) {
+  constructor({ address, uuid }) {
+    this.uuid = uuid;
     this.socket = new WebSocket(address);
-    // this.socket.onopen = function() {
-    // };
-//     socket.onclose = function() { document.title += '-c'; };
-//     socket.onmessage = levelFromYaml;
+    this.socket.onopen = () => { this.initPlayer };
+    this.socket.onclose = () => { console.log('Closed Socket') };
+    this.socket.onmessage = message => { console.log(message) };
+  }
+
+  push(message) {
+    const messageToSend = JSON.stringify(message);
+    this.socket.send(messageToSend);
+  }
+
+  initPlayer() {
+    console.log(this);
+    const message = {
+      type: 'register',
+      uuid: this.uuid
+    };
+    this.push(message)
   }
 }
