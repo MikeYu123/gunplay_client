@@ -14,7 +14,7 @@ const keyRight = 39;
 //TODO resolve name confusion(keyUp & onKeyUp)
 export default class ControlsRegisgtry {
   constructor(id) {
-    this.id = id
+    this.id = id;
     this.up = this.down = this.right = this.left = this.click = false
     this.angle = 0;
   }

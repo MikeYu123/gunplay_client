@@ -1,11 +1,13 @@
 import pixi from 'pixi'
+import * as PIXI from 'pixi.js'
 import Door from './door'
+import Gun from '../images/gun1.png'
 import Body from './body'
 import ControlsRegistry from './controls-registry'
 import { uuid } from './utils'
 import SocketControl from './socket-control'
 
-const defaultAddress = 'ws://0.0.0.0:8000/sock';
+const defaultAddress = 'ws://localhost:8090';
 
 export default class HelloWorld {
     constructor (greetings) {
@@ -13,12 +15,11 @@ export default class HelloWorld {
     }
 
     sayHello() {
-        window.a = new ControlsRegistry(uuid());
         init();
         return this.greetings;
     }
 }
-
+window.controlsRegistry = new ControlsRegistry(uuid());
 // var socket, socket_control, socket_update;
 //
 // var renderer;
@@ -148,18 +149,81 @@ window.addEventListener( 'click', onClick, false);
 
 //
 function init() {
-    const stage = new pixi.Stage();
-    const renderer = new pixi.autoDetectRenderer(windowWidth, windowHeight, null, {transparent: true});
-    console.log(renderer);
-    document.body.appendChild(renderer.view);
+  //   const stage = new pixi.Stage();
+  //   const renderer = new pixi.autoDetectRenderer(windowWidth, windowHeight, null, {transparent: true});
+  //   console.log(renderer);
+  //   document.body.appendChild(renderer.view);
+  //
+  // const g = new Body({id: 1, x: 400, y: 300, angle: 0});
+  // const g1 = new Body({id: 1, x: 400, y: 500, angle: 0});
+  // stage.addChild(g.sprite);
+  // stage.addChild(g1.sprite);
+  // renderer.render(stage);
 
-    const g = new Body({id: 1, x: 400, y: 300, angle: 0});
+  window.uuid = uuid();
 
-    window.socketControl = new SocketControl({address: 'ws://localhost:8090/'});
+  const width = windowWidth;
+  const height = windowHeight;
+  const transparent = true;
 
-    stage.addChild(g.sprite);
-    renderer.render(stage);
-    //
+  const app = new PIXI.Application({width, height, transparent});
+
+// The application will create a canvas element for you that you
+// can then insert into the DOM.
+  document.body.appendChild(app.view);
+  const loader = PIXI.loader;
+  loader.add('gun', Gun);
+
+// load the texture we need
+  loader.load((loader, resources) => {
+
+    const body = new Body({id: 1, x: 200, y: 300, angle: 0, texture: resources.gun.texture});
+
+    const updater = message => {
+      const { data } = message;
+      const parsedData = JSON.parse(data);
+      //TODO replace taking first to matching uuid
+      const newBody = parsedData.bodies[0];
+      if (newBody) {
+        body.update({x: newBody.x, y: newBody.y, angle: newBody.angle});
+        app.render();
+      }
+    };
+
+    window.socketControl = new SocketControl({address: defaultAddress, uuid: window.uuid, updater: updater})
+
+    const controlsUpdater = () => {
+      const {up, down, left, right} = window.controlsRegistry.flush();
+      const message = {
+        angle: 0,
+        up,
+        down,
+        left,
+        right
+      };
+      const messageToSend = {
+        uuid: window.uuid,
+        type: 'controls',
+        message
+      };
+      if (window.socketControl.started) {
+        window.socketControl.push(messageToSend);
+      }
+      setTimeout(controlsUpdater, 100)
+    };
+    window.socketControl.start();
+    setTimeout(controlsUpdater, 1000);
+
+
+
+    // This creates a texture from a 'bunny.png' image.
+
+    // Add the bunny to the scene we are building.
+    app.stage.addChild(body.sprite);
+  });
+
+
+  //
     // window.onbeforeunload = function (evt) {
     //     socket.send('~' + id);
     //     // socket.onclose
@@ -176,19 +240,19 @@ function onDocumentMouseMove( event ) {
     const l = Math.sqrt( dx * dx + dy * dy);
     const alp = dy > 0 ? Math.acos( dx / l ) : 2 * Math.PI - Math.acos( dx / l );
     //todo:  angle = alp;
-    window.a.setAngle(alp);
+    window.controlsRegistry.setAngle(alp);
 }
 //
 function onClick(){
-  window.a.onClick();
+  window.controlsRegistry.onClick();
 }
 //
 function onKeyDown({ keyCode }){
-  window.a.onKeyDown(keyCode)
+  window.controlsRegistry.onKeyDown(keyCode)
 }
 
 function onKeyUp({ keyCode }){
-  window.a.onKeyUp(keyCode)
+  window.controlsRegistry.onKeyUp(keyCode)
 }
 //
 // function animate() {

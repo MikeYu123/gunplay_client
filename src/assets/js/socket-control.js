@@ -3,12 +3,20 @@
  */
 
 export default class SocketControl {
-  constructor({ address, uuid }) {
+  constructor({ address, uuid, updater }) {
     this.uuid = uuid;
-    this.socket = new WebSocket(address);
-    this.socket.onopen = () => { this.initPlayer };
+    this.address = address;
+    this.updater = updater;
+    this.started = false
+  }
+
+
+  start() {
+    this.socket = new WebSocket(this.address);
+    this.socket.onopen = () => { this.initPlayer() };
     this.socket.onclose = () => { console.log('Closed Socket') };
-    this.socket.onmessage = message => { console.log(message) };
+    this.socket.onmessage = message => { this.updater(message) };
+    this.started = true
   }
 
   push(message) {
@@ -17,7 +25,6 @@ export default class SocketControl {
   }
 
   initPlayer() {
-    console.log(this);
     const message = {
       type: 'register',
       uuid: this.uuid
