@@ -2,7 +2,9 @@ import pixi from 'pixi'
 import * as PIXI from 'pixi.js'
 import Door from './door'
 import Gun from '../images/gun1.png'
+import WallTexture from '../images/brick_wall.png'
 import Body from './body'
+import Wall from './wall'
 import ControlsRegistry from './controls-registry'
 import { uuid } from './utils'
 import SocketControl from './socket-control'
@@ -162,8 +164,8 @@ function init() {
 
   window.uuid = uuid();
 
-  const width = windowWidth;
-  const height = windowHeight;
+  const width = windowWidth - 20;
+  const height = windowHeight - 20;
   const transparent = true;
 
   const app = new PIXI.Application({width, height, transparent});
@@ -173,11 +175,13 @@ function init() {
   document.body.appendChild(app.view);
   const loader = PIXI.loader;
   loader.add('gun', Gun);
+  loader.add('wall', WallTexture);
 
 // load the texture we need
   loader.load((loader, resources) => {
 
     const body = new Body({id: 1, x: 200, y: 300, angle: 0, texture: resources.gun.texture});
+    const wall = new Wall({id: 2, x: 60, y: 60, width: 200, height: 50, texture: resources.wall.texture});
 
     const updater = message => {
       const { data } = message;
@@ -186,11 +190,14 @@ function init() {
       const newBody = parsedData.bodies[0];
       if (newBody) {
         body.update({x: newBody.x, y: newBody.y, angle: newBody.angle});
+        const x = windowWidth / 2 - newBody.x;
+        const y = windowHeight / 2 - newBody.y;
+        Object.assign(app.stage.position, {x, y});
         app.render();
       }
     };
 
-    window.socketControl = new SocketControl({address: defaultAddress, uuid: window.uuid, updater: updater})
+    window.socketControl = new SocketControl({address: defaultAddress, uuid: window.uuid, updater: updater});
 
     const controlsUpdater = () => {
       const {up, down, left, right} = window.controlsRegistry.flush();
@@ -202,7 +209,6 @@ function init() {
         right
       };
       const messageToSend = {
-        uuid: window.uuid,
         type: 'controls',
         message
       };
@@ -220,6 +226,7 @@ function init() {
 
     // Add the bunny to the scene we are building.
     app.stage.addChild(body.sprite);
+    app.stage.addChild(wall.sprite);
   });
 
 
