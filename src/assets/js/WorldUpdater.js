@@ -1,13 +1,12 @@
 
 export default class WorldUpdater {
-    constructor({ }) {
-        // this.controlsRegistry = controlsRegistry;
-        // this.socketControl = socketControl;
+    constructor({ world }) {
+        this.world = world;
     }
 
     update(message) {
-        // const { data } = message;
-        // const parsedData = JSON.parse(data);
+        const { data } = message;
+        const parsedData = JSON.parse(data);
         // //TODO replace taking first to matching uuid
         // const newBody = parsedData.bodies[0];
         // if (newBody) {
