@@ -41,10 +41,10 @@ export default class World {
 
   initLoader({body, wall, bullet, door}, ready) {
     this.loader = PIXI.loader;
-    loader.add('body', body);
-    loader.add('wall', wall);
-    loader.add('bullet', bullet);
-    loader.add('door', door);
+    this.loader.add('body', body);
+    this.loader.add('wall', wall);
+    this.loader.add('bullet', bullet);
+    this.loader.add('door', door);
     this.loader.load((loader, resources) => {
       this.addBody = ({uuid, x, y, angle}) => {
         const {texture} = resources.body;

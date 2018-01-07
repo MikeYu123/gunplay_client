@@ -17,6 +17,9 @@ export default class Body {
   }
 
   update({x, y, angle}) {
+    this.x = x;
+    this.y = y;
+    this.angle = angle;
     Object.assign(this.sprite, {position: { x, y }, rotation: angle});
   }
 
