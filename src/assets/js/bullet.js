@@ -18,8 +18,8 @@ export default class Bullet {
     Object.assign(this.sprite, {position: { x, y }, rotation: angle + Math.PI / 2});
   }
 
-  constructor({ id, x, y, angle }) {
-    this.id = id;
+  constructor({ uuid, x, y, angle }) {
+    this.uuid = uuid;
     this.x = x;
     this.y = y;
     this.angle = angle;

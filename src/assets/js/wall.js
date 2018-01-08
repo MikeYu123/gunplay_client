@@ -14,8 +14,8 @@ export default class Wall {
     Object.assign(this.sprite.position, {x, y});
   }
 
-  constructor({ id, x, y, angle, width, height, texture}) {
-    this.id = id;
+  constructor({ uuid, x, y, angle, width, height, texture}) {
+    this.uuid = uuid;
     this.x = x;
     this.y = y;
     this.angle = angle;

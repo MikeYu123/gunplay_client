@@ -7,6 +7,7 @@ import {Texture, TilingSprite} from 'pixi'
 //but ne vyebyvaemsya, rabotaem s tem chto est'
 //TODO: transform update to custom setter methods
 //TODO: DRY refactoring through inheritance
+//TODO rework textures on construction
 const doorTexture = Texture.fromImage('assets/images/sprites/door_wood.png');
 const doorSpriteDefaults = { anchor: { x: .5, y: .5 }};
 
@@ -22,8 +23,8 @@ export default class Door {
     Object.assign(this.sprite, {position: { x, y }, rotation: angle});
   }
 
-  constructor({ id, x, y, angle, width, height }) {
-    this.id = id;
+  constructor({ uuid, x, y, angle, width, height }) {
+    this.id = uuid;
     this.x = x;
     this.y = y;
     this.angle = angle;

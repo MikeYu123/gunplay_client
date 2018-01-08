@@ -23,8 +23,8 @@ export default class Body {
     Object.assign(this.sprite, {position: { x, y }, rotation: angle});
   }
 
-  constructor({ id, x, y, angle, texture }) {
-    this.id = id;
+  constructor({ uuid, x, y, angle, texture }) {
+    this.uuid = uuid;
     this.x = x;
     this.y = y;
     this.angle = angle;
