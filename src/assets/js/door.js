@@ -12,22 +12,28 @@ const doorTexture = Texture.fromImage('assets/images/sprites/door_wood.png');
 const doorSpriteDefaults = { anchor: { x: .5, y: .5 }};
 
 export default class Door {
-  presetSprite({x, y, angle, width, height}) {
-    this.sprite = new TilingSprite(doorTexture, width, height);
+  presetSprite({x, y, angle, width, height, texture}) {
+    this.sprite = new TilingSprite(texture, width, height);
     Object.assign(this.sprite, doorSpriteDefaults);
     Object.assign(this.sprite.position, {x, y});
     this.sprite.rotation = angle;
   }
 
   update({x, y, angle}) {
+    this.x = x;
+    this.y = y;
+    this.angle = angle;
     Object.assign(this.sprite, {position: { x, y }, rotation: angle});
   }
 
-  constructor({ uuid, x, y, angle, width, height }) {
+  constructor({ uuid, x, y, angle, width, height, texture }) {
     this.id = uuid;
     this.x = x;
     this.y = y;
     this.angle = angle;
-    this.presetSprite({x, y, angle, width, height})
+    this.texture = texture;
+    this.width = width;
+    this.height = height;
+    this.presetSprite({x, y, angle, width, height, texture})
   }
 }

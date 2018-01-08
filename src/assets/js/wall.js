@@ -19,6 +19,9 @@ export default class Wall {
     this.x = x;
     this.y = y;
     this.angle = angle;
+    this.texture = texture;
+    this.width = width;
+    this.height = height;
     this.presetSprite({x, y, width, height, texture})
   }
 }

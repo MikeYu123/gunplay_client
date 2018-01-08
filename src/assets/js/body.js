@@ -28,6 +28,7 @@ export default class Body {
     this.x = x;
     this.y = y;
     this.angle = angle;
+    this.texture = texture;
     this.presetSprite({x, y, angle, texture})
   }
 }
