@@ -54,6 +54,9 @@ function init() {
 
 
   const app = new PIXI.Application({width, height, transparent});
+  app.renderer.resize(width, height);
+  // app.renderer.view.style.width = window.innerWidth + "px";
+  // app.renderer.view.style.height = window.innerHeight  + "px";
 
 // The application will create a canvas element for you that you
 // can then insert into the DOM.
@@ -66,9 +69,11 @@ function init() {
   loader.load((loader, resources) => {
 
     const body = new Body({id: 1, x: 200, y: 300, angle: 0, texture: resources.body.texture});
-    const wall = new Wall({id: 2, x: 60, y: 60, width: 200, height: 50, texture: resources.wall.texture});
+      const wall1 = new Wall({id: 2, x: 110, y: 110, width: 225, height: 20, texture: resources.wall.texture});
+      const wall2 = new Wall({id: 3, x: 110, y: 110, width: 25, height: 220, texture: resources.wall.texture});
+      const wall3 = new Wall({id: 3, x: 310, y: 160, width: 25, height: 220, texture: resources.wall.texture});
 
-    const updater = message => {
+      const updater = message => {
       const { data } = message;
       const parsedData = JSON.parse(data);
       //TODO replace taking first to matching uuid
@@ -104,7 +109,9 @@ function init() {
       setTimeout(controlsUpdater, 100)
     };
       app.stage.addChild(body.sprite);
-      app.stage.addChild(wall.sprite);
+      app.stage.addChild(wall1.sprite);
+      app.stage.addChild(wall2.sprite);
+      app.stage.addChild(wall3.sprite);
     window.socketControl.start();
     setTimeout(controlsUpdater, 1000);
   });
