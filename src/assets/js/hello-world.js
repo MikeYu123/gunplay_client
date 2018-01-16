@@ -113,9 +113,6 @@ function init() {
       app.stage.addChild(body.sprite);
       app.stage.addChild(wall1.sprite);
       app.stage.addChild(wall2.sprite);
-      app.stage.addChild(wall3.sprite);
-      app.stage.addChild(wall4.sprite);
-      app.stage.addChild(wall5.sprite);
     window.socketControl.start();
     setTimeout(controlsUpdater, 1000);
   });
