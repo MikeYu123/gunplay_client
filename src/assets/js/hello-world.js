@@ -69,8 +69,8 @@ function init() {
   loader.load((loader, resources) => {
 
     const body = new Body({id: 1, x: 200, y: 300, angle: 0, texture: resources.body.texture});
-      const wall1 = new Wall({id: 2, x: 110, y: 110, width: 225, height: 20, texture: resources.wall.texture});
-      const wall2 = new Wall({id: 3, x: 110, y: 110, width: 25, height: 220, texture: resources.wall.texture});
+      const wall1 = new Wall({id: 2, x: 60, y: 60, width: 225, height: 20, texture: resources.wall.texture});
+      const wall2 = new Wall({id: 3, x: 60, y: 60, width: 25, height: 220, texture: resources.wall.texture});
       const wall3 = new Wall({id: 4, x: 310, y: 160, width: 25, height: 220, texture: resources.wall.texture});
       const wall4 = new Wall({id: 5, x: 160, y: 310, width: 225, height: 20, texture: resources.wall.texture});
       const wall5 = new Wall({id: 6, x: 50, y: 50, width: 225, height: 20, texture: resources.wall.texture});
