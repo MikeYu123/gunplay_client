@@ -40,7 +40,9 @@ export default class World {
   }
 
   initApp({width, height, transparent}) {
-    this.app = new PIXI.Application({width, height, transparent})
+    this.app = new PIXI.Application({width, height, transparent});
+    //FIXME: experimental stuff
+    Object.assign(this.app.stage, {width, height});
     this.app.renderer.resize(width, height);
   }
 
