@@ -1,8 +1,9 @@
 
 export default class ControlsUpdater {
-    constructor({ controlsRegistry, socketControl }) {
+    constructor({ controlsRegistry, socketControl, timeout }) {
         this.controlsRegistry = controlsRegistry;
         this.socketControl = socketControl;
+        this.timeout = timeout;
     }
 
     update() {
@@ -18,8 +19,17 @@ export default class ControlsUpdater {
             type: 'controls',
             message
         };
-        if (window.socketControl.started) {
+        if (this.socketControl.started) {
             this.socketControl.push(messageToSend);
         }
+    }
+
+    updateContinuosly() {
+        this.update();
+        setTimeout(this.updateContinuosly.bind(this), this.timeout)
+    }
+
+    setup() {
+      setTimeout(this.updateContinuosly.bind(this), this.timeout)
     }
 }

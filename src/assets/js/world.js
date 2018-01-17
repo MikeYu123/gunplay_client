@@ -12,17 +12,21 @@ export default class World {
     this.objects = new Map();
     this.initApp(appSettings);
     this.initLoader(textures, ready);
+    this.width = appSettings.width;
+    this.height = appSettings.height;
   }
 
   centerX(){
-    return this.app.stage.width / 2
+    //TODO: stage size is tricky, maybe there is a problem with sizes
+    return this.width / 2
   }
 
   centerY(){
-    return this.app.stage.height / 2
+    return this.height / 2
   }
 
   resetCenter({x, y}) {
+    //TODO: small heght
     this.app.stage.position.x = this.centerX() - x;
     this.app.stage.position.y = this.centerY() - y;
   }
@@ -37,6 +41,16 @@ export default class World {
 
   initApp({width, height, transparent}) {
     this.app = new PIXI.Application({width, height, transparent})
+    this.app.renderer.resize(width, height);
+  }
+
+  updateObject({uuid, x, y, angle}) {
+      const obj = this.objects.get(uuid);
+      obj.update({x, y, angle});
+  }
+
+  refresh() {
+      this.app.render();
   }
 
   initLoader({body, wall, bullet, door}, ready) {
@@ -51,35 +65,30 @@ export default class World {
         const body = new Body({texture, uuid, x, y, angle});
         this.objects.set(uuid, body);
         this.app.stage.addChild(body.sprite);
+        return body;
       };
       this.addBullet = ({uuid, x, y, angle}) => {
         const {texture} = resources.bullet;
         const bullet = new Bullet({uuid, x, y, angle, texture});
         this.objects.set(uuid, bullet);
         this.app.stage.addChild(bullet.sprite);
+        return bullet;
       };
       this.addWall = ({uuid, x, y, angle, width, height}) => {
         const {texture} = resources.wall;
         const wall = new Wall({uuid, x, y, angle, width, height, texture});
         this.objects.set(uuid, wall);
         this.app.stage.addChild(wall.sprite);
+        return wall;
       };
       this.addDoor = ({uuid, x, y, width, height, angle}) => {
         const {texture} = resources.door;
         const door = new Door({uuid, x, y, angle, width, height, texture});
         this.objects.set(uuid, door);
         this.app.stage.addChild(door.sprite);
+        return door;
       };
-      ready();
+      ready(this);
     })
-  }
-
-  updateObject({uuid, x, y, angle}) {
-    const obj = this.objects.get(uuid);
-    obj.update({x, y, angle});
-  }
-
-  refresh() {
-    this.app.render();
   }
 }

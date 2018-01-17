@@ -15,7 +15,7 @@ export default class SocketControl {
     this.socket = new WebSocket(this.address);
     this.socket.onopen = () => { this.initPlayer() };
     this.socket.onclose = () => { console.log('Closed Socket') };
-    this.socket.onmessage = message => { this.updater(message) };
+    this.socket.onmessage = message => { this.updater.update(message) };
     this.started = true
   }
 
