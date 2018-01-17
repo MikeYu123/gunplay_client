@@ -15,6 +15,7 @@ import ControlsUpdater from './ControlsUpdater';
 import WorldUpdater from './WorldUpdater';
 
 const defaultAddress = 'ws://localhost:8090';
+const apiAddress = 'http://localhost:8090';
 const windowHeight = window.innerHeight;
 const windowWidth = window.innerWidth;
 
@@ -36,34 +37,40 @@ function init() {
     const transparent = true;
 
     const ready = world => {
-        const uuid = utils.uuid();
-        const body = world.addBody({uuid, x: 0, y: 0, angle: 0});
-        const player = new Player({body});
-        world.addObject(body);
-        const controlsRegistry = new ControlsRegistry();
-        const worldUpdater = new WorldUpdater({player, world});
-        const socketControl = new SocketControl({address: defaultAddress, uuid, updater: worldUpdater });
-        socketControl.start();
-        const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 100});
-        //TODO rework to promise of socketControl.start
-        setTimeout(() => controlsUpdater.setup(), 100);
+        fetch(apiAddress + "/levels/0").then(response => response.json()).then(data => {
+            const {walls, doors} = data;
+            console.log(walls[0]);
+            walls.forEach(wall => world.addWall(wall));
+            doors.forEach(door => world.addDoor(door));
+            const uuid = utils.uuid();
+            const body = world.addBody({uuid, x: 0, y: 0, angle: 0});
+            const player = new Player({body});
+            world.addObject(body);
+            const controlsRegistry = new ControlsRegistry();
+            const worldUpdater = new WorldUpdater({player, world});
+            const socketControl = new SocketControl({address: defaultAddress, uuid, updater: worldUpdater });
+            socketControl.start();
+            const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 100});
+            //TODO rework to promise of socketControl.start
+            setTimeout(() => controlsUpdater.setup(), 100);
 
-        function onClick(){
-            controlsRegistry.onClick();
-        }
-//
-        function onKeyDown({ keyCode }){
-            controlsRegistry.onKeyDown(keyCode)
-        }
+            function onClick(){
+                controlsRegistry.onClick();
+            }
+    //
+            function onKeyDown({ keyCode }){
+                controlsRegistry.onKeyDown(keyCode)
+            }
 
-        function onKeyUp({ keyCode }){
-            controlsRegistry.onKeyUp(keyCode)
-        }
+            function onKeyUp({ keyCode }){
+                controlsRegistry.onKeyUp(keyCode)
+            }
 
-        window.onkeydown = onKeyDown;
-        window.onkeyup = onKeyUp;
-        window.onclick = onClick;
-        document.body.appendChild(world.app.view);
+            window.onkeydown = onKeyDown;
+            window.onkeyup = onKeyUp;
+            window.onclick = onClick;
+            document.body.appendChild(world.app.view);
+            });
     };
 
     new World(
