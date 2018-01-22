@@ -7,13 +7,14 @@ export default class ControlsUpdater {
     }
 
     update() {
-        const {up, down, left, right} = this.controlsRegistry.flush();
+        const {up, down, left, right, click} = this.controlsRegistry.flush();
         const message = {
             angle: 0,
             up,
             down,
             left,
-            right
+            right,
+            click,
         };
         const messageToSend = {
             type: 'controls',

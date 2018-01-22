@@ -1,15 +1,14 @@
 /**
  * Created by mihailurcenkov on 18.07.17.
  */
-import {Texture, TilingSprite} from 'pixi'
+import {Texture, TilingSprite} from 'pixi.js'
 
 //TODO: these consts are bullshit as there is no class constants
 //but ne vyebyvaemsya, rabotaem s tem chto est'
 //TODO: transform update to custom setter methods
 //TODO: DRY refactoring through inheritance
 //TODO rework textures on construction
-const doorTexture = Texture.fromImage('assets/images/sprites/door_wood.png');
-const doorSpriteDefaults = { anchor: { x: .5, y: .5 }};
+const doorSpriteDefaults = { anchor: { x: .5, y: 0 }};
 
 export default class Door {
   presetSprite({x, y, angle, width, height, texture}) {

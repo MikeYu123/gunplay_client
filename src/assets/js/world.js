@@ -47,8 +47,11 @@ export default class World {
   }
 
   updateObject({uuid, x, y, angle}) {
-      const obj = this.objects.get(uuid);
-      obj.update({x, y, angle});
+    if(this.objects.has(uuid)) {
+        const obj = this.objects.get(uuid);
+        obj.update({x, y, angle});
+        return true;
+    } else return false;
   }
 
   refresh() {
@@ -85,7 +88,9 @@ export default class World {
       };
       this.addDoor = ({uuid, x, y, width, height, angle}) => {
         const {texture} = resources.door;
+        console.log(texture)
         const door = new Door({uuid, x, y, angle, width, height, texture});
+        console.log(door);
         this.objects.set(uuid, door);
         this.app.stage.addChild(door.sprite);
         return door;

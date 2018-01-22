@@ -1,7 +1,7 @@
 /**
  * Created by mihailurcenkov on 18.07.17.
  */
-import {Texture, Sprite} from 'pixi'
+import {Texture, Sprite} from 'pixi.js'
 
 const bulletTexture = Texture.fromImage('assets/images/sprites/noj.png');
 const bulletSpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .2, y: .2} };

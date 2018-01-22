@@ -10,7 +10,6 @@ export default class Wall {
   presetSprite({x, y, width, height, texture}) {
       // this.sprite = new TilingSprite(texture, width, height);
     this.sprite = new TilingSprite(texture, width, height);
-    console.log(this.sprite);
     Object.assign(this.sprite, wallSpriteDefaults);
     Object.assign(this.sprite.position, {x, y});
   }
