@@ -9,7 +9,6 @@ export default class WorldUpdater {
         const { data } = message;
         const { bodies, bullets } = JSON.parse(data);
         //TODO: analyze for efficiency and extension points
-        this.world.filterBo
         bodies.forEach(body => {
             if (!this.world.updateObject(body)) {
                 this.world.addBody(body);
@@ -20,7 +19,6 @@ export default class WorldUpdater {
                 this.world.addBullet(bullet);
             }
         });
-        console.log(this.world.objects);
         const playerBody = bodies.find(body => body.uuid === this.player.uuid);
         this.world.resetCenter(playerBody);
         this.world.refresh();

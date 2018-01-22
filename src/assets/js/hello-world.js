@@ -39,14 +39,14 @@ function init() {
     const ready = world => {
         fetch(apiAddress + "/levels/0").then(response => response.json()).then(data => {
             const {walls, doors} = data;
-            console.log(walls[0]);
             walls.forEach(wall => world.addWall(wall));
             doors.forEach(door => world.addDoor(door));
             const uuid = utils.uuid();
             const body = world.addBody({uuid, x: 0, y: 0, angle: 0});
             const player = new Player({body});
             world.addObject(body);
-            const controlsRegistry = new ControlsRegistry();
+            console.log(world.width);
+            const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
             const worldUpdater = new WorldUpdater({player, world});
             const socketControl = new SocketControl({address: defaultAddress, uuid, updater: worldUpdater });
             socketControl.start();
@@ -66,9 +66,14 @@ function init() {
                 controlsRegistry.onKeyUp(keyCode)
             }
 
+            function onDocumentMouseMove(e){
+                controlsRegistry.onDocumentMouseMove(e)
+            }
+
             window.onkeydown = onKeyDown;
             window.onkeyup = onKeyUp;
             window.onclick = onClick;
+            window.onmousemove = onDocumentMouseMove;
             document.body.appendChild(world.app.view);
             });
     };

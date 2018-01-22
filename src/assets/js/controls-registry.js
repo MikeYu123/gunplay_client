@@ -13,7 +13,9 @@ const keyRight = 39;
 
 //TODO resolve name confusion(keyUp & onKeyUp)
 export default class ControlsRegisgtry {
-  constructor() {
+  constructor({centerX, centerY}) {
+    this.centerY = centerY;
+    this.centerX = centerX;
     this.up = this.down = this.right = this.left = this.click = false;
     this.angle = 0;
   }
@@ -68,13 +70,22 @@ export default class ControlsRegisgtry {
     }
   }
 
+  onDocumentMouseMove({clientX, clientY}) {
+    const dx = clientX - this.centerX;
+    const dy = clientY - this.centerY;
+    const l = Math.sqrt( dx * dx + dy * dy);
+    const alp = dy > 0 ? Math.acos( dx / l ) : 2 * Math.PI - Math.acos( dx / l );
+    this.angle = alp;
+  }
+
   flush() {
     const state = {
       up: this.up,
       down: this.down,
       left: this.left,
       right: this.right,
-      click: this.click
+      click: this.click,
+      angle: this.angle
     };
     this.click = false;
     return state;
