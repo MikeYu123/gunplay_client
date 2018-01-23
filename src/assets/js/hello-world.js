@@ -50,9 +50,9 @@ function init() {
             const worldUpdater = new WorldUpdater({player, world});
             const socketControl = new SocketControl({address: defaultAddress, uuid, updater: worldUpdater });
             socketControl.start();
-            const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 100});
+            const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 30});
             //TODO rework to promise of socketControl.start
-            setTimeout(() => controlsUpdater.setup(), 100);
+            setTimeout(() => controlsUpdater.setup(), 30);
 
             function onClick(){
                 controlsRegistry.onClick();

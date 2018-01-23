@@ -10,6 +10,10 @@ import Body from './body'
 export default class World {
   constructor({appSettings, textures, ready}) {
     this.objects = new Map();
+    this.bodies = new Map();
+    this.walls = new Map();
+    this.bullets = new Map();
+    this.doors = new Map();
     this.initApp(appSettings);
     this.initLoader(textures, ready);
     this.width = appSettings.width;
@@ -23,6 +27,25 @@ export default class World {
 
   centerY(){
     return this.height / 2
+  }
+
+  flushBullets() {
+    this.bullets.forEach(bullet => {
+      this.app.stage.removeChild(bullet.sprite)
+    });
+    this.bullets.clear();
+  }
+
+  flushBodies() {
+    this.bodies.forEach(body => {
+        this.app.stage.removeChild(body.sprite)
+    });
+    this.bodies.clear();
+  }
+
+  flush() {
+      this.flushBullets();
+      this.flushBodies();
   }
 
   resetCenter({x, y}) {
@@ -54,6 +77,38 @@ export default class World {
     } else return false;
   }
 
+  updateBody({uuid, x, y, angle}) {
+      if(this.objects.has(uuid)) {
+          const obj = this.bodies.get(uuid);
+          obj.update({x, y, angle});
+          return true;
+      } else return false;
+  }
+
+  updateBullet({uuid, x, y, angle}) {
+      if(this.objects.has(uuid)) {
+          const obj = this.doors.get(uuid);
+          obj.update({x, y, angle});
+          return true;
+      } else return false;
+  }
+
+    // updateDoor({uuid, x, y, angle}) {
+    //     if(this.objects.has(uuid)) {
+    //         const obj = this.objects.get(uuid);
+    //         obj.update({x, y, angle});
+    //         return true;
+    //     } else return false;
+    // }
+    //
+    // updateWall({uuid, x, y, angle}) {
+    //     if(this.objects.has(uuid)) {
+    //         const obj = this.objects.get(uuid);
+    //         obj.update({x, y, angle});
+    //         return true;
+    //     } else return false;
+    // }
+
   refresh() {
       this.app.render();
   }
@@ -69,6 +124,7 @@ export default class World {
         const {texture} = resources.body;
         const body = new Body({texture, uuid, x, y, angle});
         this.objects.set(uuid, body);
+        this.bodies.set(uuid, body);
         this.app.stage.addChild(body.sprite);
         return body;
       };
@@ -76,6 +132,7 @@ export default class World {
         const {texture} = resources.bullet;
         const bullet = new Bullet({uuid, x, y, angle, texture});
         this.objects.set(uuid, bullet);
+        this.bullets.set(uuid, bullet);
         this.app.stage.addChild(bullet.sprite);
         return bullet;
       };
@@ -83,15 +140,15 @@ export default class World {
         const {texture} = resources.wall;
         const wall = new Wall({uuid, x, y, angle, width, height, texture});
         this.objects.set(uuid, wall);
+        this.walls.set(uuid, wall);
         this.app.stage.addChild(wall.sprite);
         return wall;
       };
       this.addDoor = ({uuid, x, y, width, height, angle}) => {
         const {texture} = resources.door;
-        console.log(texture)
         const door = new Door({uuid, x, y, angle, width, height, texture});
-        console.log(door);
         this.objects.set(uuid, door);
+        this.doors.set(uuid, door);
         this.app.stage.addChild(door.sprite);
         return door;
       };
