@@ -72,7 +72,7 @@ export default class ControlsRegisgtry {
 
   onDocumentMouseMove({clientX, clientY}) {
     const dx = clientX - this.centerX;
-    const dy = clientY - this.centerY;
+    const dy = this.centerY - clientY;
     const l = Math.sqrt( dx * dx + dy * dy);
     const alp = dy > 0 ? Math.acos( dx / l ) : 2 * Math.PI - Math.acos( dx / l );
     this.angle = alp;
