@@ -75,7 +75,10 @@ export default class ControlsRegisgtry {
     const dy = this.centerY - clientY;
     const l = Math.sqrt( dx * dx + dy * dy);
     const alp = dy > 0 ? Math.acos( dx / l ) : 2 * Math.PI - Math.acos( dx / l );
-    this.angle = alp;
+    console.log(alp);
+    //TODO check why tf it works
+    //  ALEX: why tf it works? it sends not so correct info to server actually
+    this.angle = -alp;
   }
 
   flush() {
