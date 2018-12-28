@@ -52,7 +52,7 @@ function init() {
             socketControl.start();
             const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 30});
             //TODO rework to promise of socketControl.start
-            setTimeout(() => controlsUpdater.setup(), 30);
+            setTimeout(() => controlsUpdater.setup(), 40);
 
             function onClick(){
                 controlsRegistry.onClick();
