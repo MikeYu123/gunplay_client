@@ -19,13 +19,6 @@ export default class Door {
     this.sprite.rotation = angle;
   }
 
-  update({x, y, angle}) {
-    this.x = x;
-    this.y = y;
-    this.angle = angle;
-    Object.assign(this.sprite, {position: { x, y }, rotation: angle});
-  }
-
   constructor({ uuid, x, y, angle, width, height, texture }) {
     this.id = uuid;
     this.x = x;

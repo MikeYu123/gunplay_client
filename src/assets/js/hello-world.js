@@ -9,7 +9,6 @@ import Body from './body'
 import Wall from './wall'
 import Player from './player'
 import ControlsRegistry from './controls-registry'
-import * as utils from './utils'
 import SocketControl from './socket-control'
 import ControlsUpdater from './ControlsUpdater';
 import WorldUpdater from './WorldUpdater';

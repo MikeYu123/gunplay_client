@@ -8,7 +8,6 @@ const wallSpriteDefaults = { anchor: { x: .5, y: .5 }, tileScale: {x: .5, y: .5}
 
 export default class Wall {
   presetSprite({x, y, width, height, texture}) {
-      // this.sprite = new TilingSprite(texture, width, height);
     this.sprite = new TilingSprite(texture, width, height);
     Object.assign(this.sprite, wallSpriteDefaults);
     Object.assign(this.sprite.position, {x, y});

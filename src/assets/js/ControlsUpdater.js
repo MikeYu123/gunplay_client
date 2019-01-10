@@ -4,33 +4,33 @@ export default class ControlsUpdater {
         this.controlsRegistry = controlsRegistry;
         this.socketControl = socketControl;
         this.timeout = timeout;
-    }
 
-    update() {
-        const {up, down, left, right, click, angle} = this.controlsRegistry.flush();
-        const message = {
-            angle,
-            up,
-            down,
-            left,
-            right,
-            click,
-        };
-        const messageToSend = {
-            type: 'controls',
-            message
-        };
-        if (this.socketControl.started) {
-            this.socketControl.push(messageToSend);
+        this.update = () => {
+            const {up, down, left, right, click, angle} = this.controlsRegistry.flush();
+            const message = {
+                angle,
+                up,
+                down,
+                left,
+                right,
+                click,
+            };
+            const messageToSend = {
+                type: 'controls',
+                message
+            };
+            if (this.socketControl.started) {
+                this.socketControl.push(messageToSend);
+            }
         }
-    }
 
-    updateContinuosly() {
-        this.update();
-        setTimeout(this.updateContinuosly.bind(this), this.timeout)
-    }
+        this.updateContinuosly = () =>  {
+            this.update();
+            setTimeout(this.updateContinuosly, this.timeout)
+        }
 
-    setup() {
-      setTimeout(this.updateContinuosly.bind(this), this.timeout)
+        this.setup = () => {
+            setTimeout(this.updateContinuosly, this.timeout)
+        }
     }
 }

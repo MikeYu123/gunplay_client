@@ -66,56 +66,12 @@ export default class World {
     this.objects.set(object.uuid, object)
   }
 
-  addObjects(objects) {
-    objects.forEach(this.addObject)
-  }
-
   initApp({width, height, transparent}) {
     this.app = new PIXI.Application({width, height, transparent});
     //FIXME: experimental stuff
     Object.assign(this.app.stage, {width, height});
     this.app.renderer.resize(width, height);
   }
-
-  updateObject({uuid, x, y, angle}) {
-    if(this.objects.has(uuid)) {
-        const obj = this.objects.get(uuid);
-        obj.update({x, y, angle});
-        return true;
-    } else return false;
-  }
-
-  updateBody({uuid, x, y, angle}) {
-      if(this.objects.has(uuid)) {
-          const obj = this.bodies.get(uuid);
-          obj.update({x, y, angle});
-          return true;
-      } else return false;
-  }
-
-  updateBullet({uuid, x, y, angle}) {
-      if(this.objects.has(uuid)) {
-          const obj = this.doors.get(uuid);
-          obj.update({x, y, angle});
-          return true;
-      } else return false;
-  }
-
-    // updateDoor({uuid, x, y, angle}) {
-    //     if(this.objects.has(uuid)) {
-    //         const obj = this.objects.get(uuid);
-    //         obj.update({x, y, angle});
-    //         return true;
-    //     } else return false;
-    // }
-    //
-    // updateWall({uuid, x, y, angle}) {
-    //     if(this.objects.has(uuid)) {
-    //         const obj = this.objects.get(uuid);
-    //         obj.update({x, y, angle});
-    //         return true;
-    //     } else return false;
-    // }
 
   refresh() {
       this.app.render();
