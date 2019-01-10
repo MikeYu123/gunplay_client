@@ -38,17 +38,15 @@ function init() {
     const transparent = true;
 
     const ready = world => {
-        fetch(apiAddress + "/levels/0").then(response => response.json()).then(data => {
-            const {walls, doors} = data;
+        fetch(apiAddress + '/levels/0').then(response => response.json()).then(data => {
+            const {walls} = data;
             walls.forEach(wall => world.addWall(wall));
-            // doors.forEach(door => world.addDoor(door));
-            const uuid = utils.uuid();
-            const body = world.addBody({uuid, x: 0, y: 0, angle: 0});
+            const body = world.addBody({x: 0, y: 0, angle: 0});
             const player = new Player({body});
             world.addObject(body);
             const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
             const worldUpdater = new WorldUpdater({player, world});
-            const socketControl = new SocketControl({address: defaultAddress, uuid, updater: worldUpdater });
+            const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater });
             socketControl.start();
             const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 30});
             //TODO rework to promise of socketControl.start
@@ -90,29 +88,3 @@ function init() {
             ready
         });
 }
-//
-// function onDocumentMouseMove({clientX, clientY}) {
-//     const dx = clientX - centerX;
-//     const dy = centerY - clientY;
-//     const l = Math.sqrt( dx * dx + dy * dy);
-//     const alp = dy > 0 ? Math.acos( dx / l ) : 2 * Math.PI - Math.acos( dx / l );
-//     console.log(dx);
-//     console.log(dy);
-//     window.controlsRegistry.setAngle(alp);
-// }
-//
-// function onClick(){
-//   window.controlsRegistry.onClick();
-// }
-// //
-// function onKeyDown({ keyCode }){
-//   window.controlsRegistry.onKeyDown(keyCode)
-// }
-//
-// function onKeyUp({ keyCode }){
-//   window.controlsRegistry.onKeyUp(keyCode)
-// }
-//
-// window.onkeydown = onKeyDown;
-// window.onkeyup = onKeyUp;
-// window.onclick = onClick;

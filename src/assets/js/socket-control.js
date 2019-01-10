@@ -3,8 +3,7 @@
  */
 
 export default class SocketControl {
-  constructor({ address, uuid, updater }) {
-    this.uuid = uuid;
+  constructor({ address, updater }) {
     this.address = address;
     this.updater = updater;
     this.started = false
@@ -25,8 +24,7 @@ export default class SocketControl {
 
   initPlayer() {
     const message = {
-      type: 'register',
-      uuid: this.uuid
+      type: 'register'
     };
     this.push(message)
   }
