@@ -7,7 +7,7 @@ export default class WorldUpdater {
 
     update(message) {
         const { data } = message;
-        const {registered, bodies, bullets, id} = JSON.parse(data);
+        const {registered, bodies, bullets, doors, id} = JSON.parse(data);
         if (!registered) {
             //TODO: analyze for efficiency and extension points
             this.world.flush();
@@ -16,6 +16,9 @@ export default class WorldUpdater {
             });
             bullets.forEach(bullet => {
                 this.world.addBullet(bullet);
+            });
+            doors.forEach(door => {
+                this.world.addDoor(door);
             });
             const playerBody = bodies.find(body => body.uuid === this.player.uuid);
             this.world.resetCenter(playerBody);

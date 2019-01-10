@@ -14,8 +14,10 @@ import SocketControl from './socket-control'
 import ControlsUpdater from './ControlsUpdater';
 import WorldUpdater from './WorldUpdater';
 
-const defaultAddress = 'ws://localhost:8090';
-const apiAddress = 'http://localhost:8090';
+// const defaultAddress = 'ws://localhost:8090';
+// const apiAddress = 'http://localhost:8090';
+const defaultAddress = 'ws://192.168.46.145:8090';
+const apiAddress = 'http://192.168.46.145:8090';
 const windowHeight = window.innerHeight;
 const windowWidth = window.innerWidth;
 
@@ -26,7 +28,6 @@ export default class HelloWorld {
     }
 
     sayHello() {
-        console.log(utils.uuid());
         init();
         return this.greetings;
     }
@@ -40,12 +41,11 @@ function init() {
         fetch(apiAddress + "/levels/0").then(response => response.json()).then(data => {
             const {walls, doors} = data;
             walls.forEach(wall => world.addWall(wall));
-            doors.forEach(door => world.addDoor(door));
+            // doors.forEach(door => world.addDoor(door));
             const uuid = utils.uuid();
             const body = world.addBody({uuid, x: 0, y: 0, angle: 0});
             const player = new Player({body});
             world.addObject(body);
-            console.log(world.width);
             const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
             const worldUpdater = new WorldUpdater({player, world});
             const socketControl = new SocketControl({address: defaultAddress, uuid, updater: worldUpdater });

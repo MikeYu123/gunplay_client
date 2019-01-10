@@ -43,9 +43,17 @@ export default class World {
     this.bodies.clear();
   }
 
+  flushDoors() {
+      this.doors.forEach(door => {
+          this.app.stage.removeChild(door.sprite)
+      });
+      this.doors.clear();
+  }
+
   flush() {
       this.flushBullets();
       this.flushBodies();
+      this.flushDoors();
   }
 
   resetCenter({x, y}) {
