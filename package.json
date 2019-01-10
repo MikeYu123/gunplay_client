@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prestart": "npm rebuild node-sass",
-    "start": "webpack-dev-server --inline --content-base dist/ --open",
+    "start": "webpack-dev-server --inline --content-base dist/ --open --host 0.0.0.0",
     "eslint": "./node_modules/.bin/eslint src/*.js",
     "accessibility": "node ./dev/accessibility-validation.js",
     "htmllint": "node ./dev/html-validator.js",
