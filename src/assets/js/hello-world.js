@@ -23,66 +23,63 @@ const windowHeight = window.innerHeight;
 const windowWidth = window.innerWidth;
 
 
-export default class HelloWorld {
-    constructor (greetings) {
-        this.greetings = greetings;
+export default class Game {
+    constructor(address = apiAddress + '/levels/0'){
+        this.address = address
+
+        this.fetchWorld = () => fetch(this.address).then(r => r.json());
+        this.start = () => {
+            const width = windowWidth - 20;
+            const height = windowHeight - 20;
+            const transparent = true;
+
+            const ready = world => {
+                this.fetchWorld().then(data => {
+                    const {walls} = data;
+                    walls.forEach(wall => world.addWall(wall));
+                    const player = new Player({});
+                    const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
+                    const worldUpdater = new WorldUpdater({player, world});
+                    const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater });
+                    const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 30});
+                    socketControl.start().then(controlsUpdater.setup);
+
+                    function onClick(){
+                        controlsRegistry.onClick();
+                    }
+                    //
+                    function onKeyDown({ keyCode }){
+                        controlsRegistry.onKeyDown(keyCode)
+                    }
+
+                    function onKeyUp({ keyCode }){
+                        controlsRegistry.onKeyUp(keyCode)
+                    }
+
+                    function onDocumentMouseMove(e){
+                        controlsRegistry.onDocumentMouseMove(e)
+                    }
+
+                    window.onkeydown = onKeyDown;
+                    window.onkeyup = onKeyUp;
+                    window.onclick = onClick;
+                    window.onmousemove = onDocumentMouseMove;
+                    document.body.appendChild(world.app.view);
+                });
+            };
+
+            new World(
+                {
+                    appSettings: {width, height, transparent},
+                    textures: {
+                        body: BodyTexture,
+                        bullet: BulletTexture,
+                        door: DoorTexture,
+                        wall: WallTexture
+                    },
+                    ready
+                });
+        };
     }
 
-    sayHello() {
-        init();
-        return this.greetings;
-    }
-}
-const fetchWorld = (address = apiAddress + '/levels/0') => fetch(address).then(r => r.json());
-const init = () => {
-    const width = windowWidth - 20;
-    const height = windowHeight - 20;
-    const transparent = true;
-
-    const ready = world => {
-        fetchWorld().then(data => {
-            const {walls} = data;
-            walls.forEach(wall => world.addWall(wall));
-            const player = new Player({});
-            const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
-            const worldUpdater = new WorldUpdater({player, world});
-            const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater });
-            const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 30});
-            socketControl.start().then(controlsUpdater.setup);
-
-            function onClick(){
-                controlsRegistry.onClick();
-            }
-    //
-            function onKeyDown({ keyCode }){
-                controlsRegistry.onKeyDown(keyCode)
-            }
-
-            function onKeyUp({ keyCode }){
-                controlsRegistry.onKeyUp(keyCode)
-            }
-
-            function onDocumentMouseMove(e){
-                controlsRegistry.onDocumentMouseMove(e)
-            }
-
-            window.onkeydown = onKeyDown;
-            window.onkeyup = onKeyUp;
-            window.onclick = onClick;
-            window.onmousemove = onDocumentMouseMove;
-            document.body.appendChild(world.app.view);
-            });
-    };
-
-    new World(
-        {
-            appSettings: {width, height, transparent},
-            textures: {
-                body: BodyTexture,
-                bullet: BulletTexture,
-                door: DoorTexture,
-                wall: WallTexture
-            },
-            ready
-        });
 }
