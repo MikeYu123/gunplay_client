@@ -57,7 +57,6 @@ export default class World {
   }
 
   resetCenter({x, y}) {
-    //TODO: small heght
     this.app.stage.position.x = this.centerX() - x;
     this.app.stage.position.y = this.centerY() - y;
   }

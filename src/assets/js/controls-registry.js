@@ -24,10 +24,6 @@ export default class ControlsRegisgtry {
     this.click = true;
   }
 
-  setAngle(angle) {
-    this.angle = angle;
-  }
-
   onKeyUp(keyCode) {
     switch (keyCode) {
       case keyW:

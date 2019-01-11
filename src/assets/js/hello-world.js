@@ -1,8 +1,10 @@
 import pixi from 'pixi'
 import * as PIXI from 'pixi.js'
 import World from './world'
-import BodyTexture from '../images/gun1.png'
-import BulletTexture from '../images/noj.png'
+// import BodyTexture from '../images/gun1.png'
+import BodyTexture from '../images/player.png'
+// import BulletTexture from '../images/noj.png'
+import BulletTexture from '../images/bullet.png'
 import DoorTexture from '../images/door_wood.png'
 import WallTexture from '../images/brick_wall.png'
 import Body from './body'
@@ -40,9 +42,8 @@ function init() {
         fetch(apiAddress + '/levels/0').then(response => response.json()).then(data => {
             const {walls} = data;
             walls.forEach(wall => world.addWall(wall));
-            const body = world.addBody({x: 0, y: 0, angle: 0});
+            const body = world.addBody({});
             const player = new Player({body});
-            world.addObject(body);
             const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
             const worldUpdater = new WorldUpdater({player, world});
             const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater });

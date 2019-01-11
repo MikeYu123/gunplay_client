@@ -3,6 +3,7 @@
  */
 import {Sprite} from 'pixi.js'
 //TODO: Do something with textures
+// import Gun from '../images/noj.png'
 import Gun from '../images/noj.png'
 const bodySpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .1, y: .1} };
 
