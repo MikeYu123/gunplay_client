@@ -19,9 +19,7 @@ export default class ControlsUpdater {
                 type: 'controls',
                 message
             };
-            if (this.socketControl.started) {
-                this.socketControl.push(messageToSend);
-            }
+            this.socketControl.push(messageToSend);
         }
 
         this.updateContinuosly = () =>  {
@@ -30,7 +28,7 @@ export default class ControlsUpdater {
         }
 
         this.setup = () => {
-            setTimeout(this.updateContinuosly, this.timeout)
+            this.updateContinuosly()
         }
     }
 }

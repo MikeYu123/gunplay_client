@@ -6,26 +6,35 @@ export default class SocketControl {
   constructor({ address, updater }) {
     this.address = address;
     this.updater = updater;
-    this.started = false
+
+    this.start = () => {
+        this.socket = new WebSocket(this.address);
+        return new Promise((resolve, reject) => {
+            this.socket.onopen = () => {
+                this.initPlayer();
+                resolve()
+            };
+            this.socket.onclose = () => {
+                console.log('Closed Socket')
+            };
+            this.socket.onmessage = message => {
+                this.updater.update(message)
+            };
+        })
+    }
+
+    this.push = (message) => {
+        const messageToSend = JSON.stringify(message);
+        this.socket.send(messageToSend);
+    }
+
+    this.initPlayer = () => {
+        const message = {
+            type: 'register'
+        };
+        this.push(message)
+    }
   }
 
 
-  start() {
-    this.socket = new WebSocket(this.address);
-    this.socket.onopen = () => { this.initPlayer(); this.started = true };
-    this.socket.onclose = () => { console.log('Closed Socket') };
-    this.socket.onmessage = message => { this.updater.update(message) };
-  }
-
-  push(message) {
-    const messageToSend = JSON.stringify(message);
-    this.socket.send(messageToSend);
-  }
-
-  initPlayer() {
-    const message = {
-      type: 'register'
-    };
-    this.push(message)
-  }
 }

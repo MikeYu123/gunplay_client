@@ -3,7 +3,7 @@
  */
 
 export default class Player {
-  constructor({body}) {
+  constructor({body = {}} = {}) {
     this.uuid = body.uuid;
     this.body = body;
   }

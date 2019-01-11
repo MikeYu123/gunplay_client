@@ -33,24 +33,22 @@ export default class HelloWorld {
         return this.greetings;
     }
 }
-function init() {
+const fetchWorld = (address = apiAddress + '/levels/0') => fetch(address).then(r => r.json());
+const init = () => {
     const width = windowWidth - 20;
     const height = windowHeight - 20;
     const transparent = true;
 
     const ready = world => {
-        fetch(apiAddress + '/levels/0').then(response => response.json()).then(data => {
+        fetchWorld().then(data => {
             const {walls} = data;
             walls.forEach(wall => world.addWall(wall));
-            const body = world.addBody({});
-            const player = new Player({body});
+            const player = new Player({});
             const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
             const worldUpdater = new WorldUpdater({player, world});
             const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater });
-            socketControl.start();
             const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 30});
-            //TODO rework to promise of socketControl.start
-            setTimeout(() => controlsUpdater.setup(), 40);
+            socketControl.start().then(controlsUpdater.setup);
 
             function onClick(){
                 controlsRegistry.onClick();
