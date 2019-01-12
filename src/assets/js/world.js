@@ -83,9 +83,12 @@ export default class World {
     this.loader.add('bullet', bullet);
     this.loader.add('door', door);
     this.loader.load((loader, resources) => {
-      this.addBody = ({uuid, x, y, angle}) => {
+      this.addBody = ({uuid, x, y, angle}, isPlayer) => {
         const {texture} = resources.body;
         const body = new Body({texture, uuid, x, y, angle});
+        if (isPlayer) {
+          body.setPlayer()
+        }
         this.objects.set(uuid, body);
         this.bodies.set(uuid, body);
         this.app.stage.addChild(body.sprite);

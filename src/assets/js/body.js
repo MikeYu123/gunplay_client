@@ -2,6 +2,7 @@
  * Created by mihailurcenkov on 18.07.17.
  */
 import {Sprite} from 'pixi.js'
+import {GlowFilter} from 'pixi-filters'
 const bodySpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .1, y: .1} };
 
 export default class Body {
@@ -10,7 +11,6 @@ export default class Body {
     this.sprite = new Sprite(texture);
     Object.assign(this.sprite, bodySpriteDefaults);
     Object.assign(this.sprite.position, {x, y});
-    //NOTE: -a??? Ask @bubiga
     this.sprite.rotation = angle;
   }
 
@@ -27,6 +27,11 @@ export default class Body {
     this.y = y;
     this.angle = angle;
     this.texture = texture;
-    this.presetSprite({x, y, angle, texture})
+    this.presetSprite({x, y, angle, texture});
+    this.setPlayer = () => {
+        this.sprite.filters = [new GlowFilter(10, 1, 1, 0x999900, 0.5)];
+    }
   }
+
+
 }

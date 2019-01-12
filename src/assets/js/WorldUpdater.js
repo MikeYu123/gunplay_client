@@ -1,3 +1,4 @@
+import {GlowFilter} from "pixi-filters";
 
 export default class WorldUpdater {
     constructor({ world, player }) {
@@ -12,7 +13,11 @@ export default class WorldUpdater {
             //TODO: analyze for efficiency and extension points
             this.world.flush();
             bodies.forEach(body => {
-                this.world.addBody(body);
+                const isPlayer = body.uuid === this.player.uuid;
+                this.world.addBody(body, isPlayer);
+                if (isPlayer) {
+                    this.world.resetCenter(body);
+                }
             });
             bullets.forEach(bullet => {
                 this.world.addBullet(bullet);
@@ -20,8 +25,10 @@ export default class WorldUpdater {
             doors.forEach(door => {
                 this.world.addDoor(door);
             });
-            const playerBody = bodies.find(body => body.uuid === this.player.uuid);
-            this.world.resetCenter(playerBody);
+            // const playerBody = bodies.find(body => body.uuid === this.player.uuid);
+            // if (playerBody) {
+            //     console.log(playerBody.update);
+            // }
             this.world.refresh();
         }
         else {
