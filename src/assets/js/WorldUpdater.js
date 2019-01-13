@@ -8,7 +8,7 @@ export default class WorldUpdater {
 
     update(message) {
         const { data } = message;
-        const {registered, bodies, bullets, doors, id} = JSON.parse(data);
+        const {registered, bodies, bullets, doors, id, leaderBoard} = JSON.parse(data);
         if (!registered) {
             //TODO: analyze for efficiency and extension points
             this.world.flush();
