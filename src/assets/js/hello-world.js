@@ -16,6 +16,7 @@ import ControlsUpdater from './ControlsUpdater';
 import WorldUpdater from './WorldUpdater';
 
 const defaultAddress = 'ws://localhost:8090';
+const defaultName = 'huy';
 const apiAddress = 'http://localhost:8090';
 // const defaultAddress = 'ws://192.168.46.145:8090';
 // const apiAddress = 'http://192.168.46.145:8090';
@@ -24,7 +25,7 @@ const windowWidth = window.innerWidth;
 
 
 export default class Game {
-    constructor(address = apiAddress + '/levels/0'){
+    constructor(name = defaultName,address = apiAddress + '/levels/0'){
         this.address = address
 
         this.fetchWorld = () => fetch(this.address).then(r => r.json());
@@ -40,7 +41,7 @@ export default class Game {
                     const player = new Player({});
                     const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
                     const worldUpdater = new WorldUpdater({player, world});
-                    const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater });
+                    const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater, name });
                     const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 30});
                     socketControl.start().then(controlsUpdater.setup);
 

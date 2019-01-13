@@ -3,9 +3,10 @@
  */
 
 export default class SocketControl {
-  constructor({ address, updater }) {
+  constructor({ address, updater, name }) {
     this.address = address;
     this.updater = updater;
+    this.name = name;
 
     this.start = () => {
         this.socket = new WebSocket(this.address);
@@ -30,7 +31,8 @@ export default class SocketControl {
 
     this.initPlayer = () => {
         const message = {
-            type: 'register'
+            type: 'register',
+            name: this.name
         };
         this.push(message)
     }
