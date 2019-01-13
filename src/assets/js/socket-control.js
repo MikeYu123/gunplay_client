@@ -32,7 +32,9 @@ export default class SocketControl {
     this.initPlayer = () => {
         const message = {
             type: 'register',
-            name: this.name
+            message: {
+                name: this.name
+            }
         };
         this.push(message)
     }
