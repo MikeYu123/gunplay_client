@@ -42,7 +42,7 @@ export default class Game {
                     const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
                     const worldUpdater = new WorldUpdater({player, world});
                     const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater, name });
-                    const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 30});
+                    const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 50});
                     socketControl.start().then(controlsUpdater.setup);
 
                     function onClick(){
