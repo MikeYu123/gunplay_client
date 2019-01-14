@@ -10,3 +10,31 @@
 @import 'molecues/logo';
 
 @import 'organisms/header';
+
+*{
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.leaderboard{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 450px;
+  background-color: rgba(224, 255, 255, 0.5);
+  user-select: none;
+  table{
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+  td{
+    padding: 0 10px;
+    border: 1px solid lightseagreen;
+    line-height: 2;
+    &.name{
+      font-weight: bold;
+      width: 40%;
+    }
+  }
+}
