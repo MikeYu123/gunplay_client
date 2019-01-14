@@ -1,5 +1,6 @@
 import {GlowFilter} from "pixi-filters";
 import LeaderBoard from './Leaderboard'
+import {debounce} from './utils'
 
 const LeadBoard = new LeaderBoard( {host: window.document.documentElement});
 export default class WorldUpdater {
@@ -32,7 +33,7 @@ export default class WorldUpdater {
             //     console.log(playerBody.update);
             // }
             this.world.refresh();
-            LeadBoard.update( leaderBoard );
+            debounce(LeadBoard.update( leaderBoard ), 300)
         }
         else {
             this.player.uuid = id
