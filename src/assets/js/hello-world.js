@@ -11,10 +11,11 @@ import Body from './body'
 import Wall from './wall'
 import Player from './player'
 import ControlsRegistry from './controls-registry'
+import NippleControlsRegistry from './NippleControlsRegistry'
 import SocketControl from './socket-control'
 import ControlsUpdater from './ControlsUpdater';
 import WorldUpdater from './WorldUpdater';
-
+import nipplejs from 'nipplejs';
 // const defaultAddress = 'ws://localhost:8090';
 const defaultName = 'huy';
 // const apiAddress = 'http://localhost:8090';
@@ -24,10 +25,44 @@ const windowHeight = window.innerHeight;
 const windowWidth = window.innerWidth;
 
 
-export default class Game {
-    constructor(name = defaultName,address = apiAddress + '/levels/0'){
-        this.address = address
+// const angleManager = {}
 
+// if(device.mobile()) {
+//     nipplejs.create({size: 150, maxNumberOfNipples: 2, multitouch: true, color: 'black'});
+// }
+export default class Game {
+    constructor(name = defaultName, mobile = false, address = apiAddress + '/levels/0'){
+        this.address = address;
+        this.mobile = mobile;
+
+        this.control = (world) => {
+            if (this.mobile) {
+                const div1 = document.createElement('div');
+                div1.id = 'directionManager';
+                div1.className = 'nippleContainer';
+                const div2 = document.createElement('div');
+                div2.id = 'angleManager';
+                div2.className = 'nippleContainer';
+                const div3 = document.createElement('div');
+                div3.id = 'angleAndShotManager';
+                div3.className = 'nippleContainer';
+                document.body.appendChild(div1)
+                document.body.appendChild(div3)
+                document.body.appendChild(div2)
+                const directionManager = nipplejs.create({size: 150,color: 'black', zone: div1, mode: 'static', position: {top: '60%', left: '20%'}});
+                const angleManager = nipplejs.create({size: 150, color: 'black', zone: div2, mode: 'static', position: {top: '50%', right: '20%'}});
+                const angleAndShotManager = nipplejs.create({size: 150, color: 'black', zone: div3, mode: 'static', position: {bottom: '50%', right: '20%'}});
+                return new NippleControlsRegistry({directionManager, angleManager, angleAndShotManager});
+            }
+            else {
+                const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
+                window.onkeydown = controlsRegistry.onKeyDown;
+                window.onkeyup = controlsRegistry.onKeyUp;
+                window.onclick = controlsRegistry.onClick;
+                window.onmousemove = controlsRegistry.onDocumentMouseMove;
+                return controlsRegistry;
+            }
+        }
         this.fetchWorld = () => fetch(this.address).then(r => r.json());
         this.start = () => {
             const width = windowWidth - 20;
@@ -39,32 +74,12 @@ export default class Game {
                     const {walls} = data;
                     walls.forEach(wall => world.addWall(wall));
                     const player = new Player({});
-                    const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
+                    const controlsRegistry = this.control(world)
                     const worldUpdater = new WorldUpdater({player, world});
                     const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater, name });
-                    const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 50});
+                    const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 70});
                     socketControl.start().then(controlsUpdater.setup);
 
-                    function onClick(){
-                        controlsRegistry.onClick();
-                    }
-                    //
-                    function onKeyDown({ keyCode }){
-                        controlsRegistry.onKeyDown(keyCode)
-                    }
-
-                    function onKeyUp({ keyCode }){
-                        controlsRegistry.onKeyUp(keyCode)
-                    }
-
-                    function onDocumentMouseMove(e){
-                        controlsRegistry.onDocumentMouseMove(e)
-                    }
-
-                    window.onkeydown = onKeyDown;
-                    window.onkeyup = onKeyUp;
-                    window.onclick = onClick;
-                    window.onmousemove = onDocumentMouseMove;
                     document.body.appendChild(world.app.view);
                 });
             };
