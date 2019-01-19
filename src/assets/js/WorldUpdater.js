@@ -11,32 +11,37 @@ export default class WorldUpdater {
 
     update(message) {
         const { data } = message;
-        const {registered, bodies, bullets, doors, id, leaderBoard} = JSON.parse(data);
-        if (!registered) {
-            //TODO: analyze for efficiency and extension points
-            this.world.flush();
-            bodies.forEach(body => {
-                const isPlayer = body.uuid === this.player.uuid;
-                this.world.addBody(body, isPlayer);
-                if (isPlayer) {
-                    this.world.resetCenter(body);
-                }
-            });
-            bullets.forEach(bullet => {
-                this.world.addBullet(bullet);
-            });
-            doors.forEach(door => {
-                this.world.addDoor(door);
-            });
-            // const playerBody = bodies.find(body => body.uuid === this.player.uuid);
-            // if (playerBody) {
-            //     console.log(playerBody.update);
-            // }
-            this.world.refresh();
-            debounce(LeadBoard.update( leaderBoard ), 300)
-        }
-        else {
-            this.player.uuid = id
+        const parsedData = JSON.parse(data);
+        const { type } = parsedData;
+        switch (type) {
+            case "updates":
+                const {bodies, bullets, doors} = JSON.parse(data);
+                this.world.flush();
+                bodies.forEach(body => {
+                    const isPlayer = body.uuid === this.player.uuid;
+                    this.world.addBody(body, isPlayer);
+                    if (isPlayer) {
+                        this.world.resetCenter(body);
+                    }
+                });
+                bullets.forEach(bullet => {
+                    this.world.addBullet(bullet);
+                });
+                doors.forEach(door => {
+                    this.world.addDoor(door);
+                });
+                // const playerBody = bodies.find(body => body.uuid === this.player.uuid);
+                // if (playerBody) {
+                //     console.log(playerBody.update);
+                // }
+                this.world.refresh();
+                break;
+            case "leaderboard":
+                debounce(LeadBoard.update( parsedData.leaderboard ), 300)
+                break;
+            case "registered":
+                this.player.uuid = parsedData.id;
+
         }
     }
 }

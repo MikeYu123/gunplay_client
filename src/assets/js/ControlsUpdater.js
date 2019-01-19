@@ -7,17 +7,15 @@ export default class ControlsUpdater {
 
         this.update = () => {
             const {up, down, left, right, click, angle} = this.controlsRegistry.flush();
-            const message = {
+
+            const messageToSend = {
+                type: 'controls',
                 angle,
                 up,
                 down,
                 left,
                 right,
-                click,
-            };
-            const messageToSend = {
-                type: 'controls',
-                message
+                click
             };
             this.socketControl.push(messageToSend);
         }
