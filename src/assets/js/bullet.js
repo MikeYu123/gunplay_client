@@ -13,8 +13,7 @@ export default class Bullet {
     this.sprite.rotation = angle + Math.PI / 2;
   }
 
-  constructor({ uuid, x, y, angle, texture }) {
-    this.uuid = uuid;
+  constructor({x, y, angle, texture }) {
     this.x = x;
     this.y = y;
     this.angle = angle;

@@ -15,14 +15,10 @@ export default class WorldUpdater {
         const { type } = parsedData;
         switch (type) {
             case "updates":
-                const {bodies, bullets, doors} = JSON.parse(data);
+                const {bodies, bullets, doors, player} = JSON.parse(data);
                 this.world.flush();
                 bodies.forEach(body => {
-                    const isPlayer = body.uuid === this.player.uuid;
-                    this.world.addBody(body, isPlayer);
-                    if (isPlayer) {
-                        this.world.resetCenter(body);
-                    }
+                    this.world.addBody(body, false);
                 });
                 bullets.forEach(bullet => {
                     this.world.addBullet(bullet);
@@ -30,6 +26,11 @@ export default class WorldUpdater {
                 doors.forEach(door => {
                     this.world.addDoor(door);
                 });
+                if(player) {
+                    this.world.addBody(player, true);
+                    this.world.resetCenter(player);
+
+                }
                 // const playerBody = bodies.find(body => body.uuid === this.player.uuid);
                 // if (playerBody) {
                 //     console.log(playerBody.update);
