@@ -6,10 +6,11 @@ export default class BinaryProtocol {
         const uuidSize = 16;
         const intSize = 4;
         const doubleSize = 8;
+        const byteSize = 1;
         const decoder = new TextDecoder("utf-8");
         const encoder = new TextEncoder('utf-8')
 
-        this.parseObject = (view, offset) => {
+        const parseObject = (view, offset) => {
             const x = view.getFloat64(offset);
             const y = view.getFloat64(offset + doubleSize);
             const angle = view.getFloat64(offset + doubleSize * 2);
@@ -19,7 +20,7 @@ export default class BinaryProtocol {
 
         };
 
-        this.parseLeaderboardEntry = (view, offset) => {
+        const parseLeaderboardEntry = (view, offset) => {
             const {buffer} = view;
             const id = uuid.fromBytes(new Uint8Array(buffer.slice(offset, offset + uuidSize))).hex;
             const nameSize = view.getInt32(offset + uuidSize);
@@ -33,45 +34,45 @@ export default class BinaryProtocol {
             return {newOffset, entry}
         }
 
-        this.parseRegistered = view => {
+        const parseRegistered = view => {
             const type = 'registered';
             const id = uuid.fromBytes(new Uint8Array(view.buffer.slice(1))).hex;
             return {type, id};
         };
 
-        this.parseUpdates = view => {
+        const parseUpdates = view => {
             const type = 'updates';
-            const bodiesSize = view.getInt32(1);
-            const bodies = Array(bodiesSize).fill(1).map((_, i) =>
-                this.parseObject(view, 5 + i * objectSize)
+            const bodiesSize = view.getInt32(byteSize);
+            const bodies = Array(bodiesSize).fill(0).map((_, i) =>
+                parseObject(view, byteSize + intSize + i * objectSize)
             )
-            const bulletsSize = view.getInt32(5 + bodiesSize * objectSize);
-            const bullets = Array(bulletsSize).fill(1).map((_, i) =>
-                this.parseObject(view, 9 + (bodiesSize + i) * objectSize)
+            const bulletsSize = view.getInt32(byteSize + intSize + bodiesSize * objectSize);
+            const bullets = Array(bulletsSize).fill(0).map((_, i) =>
+                parseObject(view, byteSize + intSize * 2 + (bodiesSize + i) * objectSize)
             )
-            const doorsSize = view.getInt32(9 + (bodiesSize + bulletsSize) * objectSize);
-            const doors = Array(doorsSize).fill(1).map((_, i) =>
-                this.parseObject(view, 13 + (bodiesSize + bulletsSize + i) * objectSize)
+            const doorsSize = view.getInt32(byteSize + intSize * 2 + (bodiesSize + bulletsSize) * objectSize);
+            const doors = Array(doorsSize).fill(0).map((_, i) =>
+                parseObject(view, byteSize + intSize * 3 + (bodiesSize + bulletsSize + i) * objectSize)
             )
-            const playerSize = view.getInt32(13 + (bodiesSize + bulletsSize + doorsSize) * objectSize);
-            const player = Array(playerSize).fill(1).map((_, i) =>
-                this.parseObject(view, 17 + (bodiesSize + doorsSize + bulletsSize + i) * objectSize)
+            const playerSize = view.getInt32(byteSize + intSize * 3 + (bodiesSize + bulletsSize + doorsSize) * objectSize);
+            const player = Array(playerSize).fill(0).map((_, i) =>
+                parseObject(view, byteSize + intSize * 4 + (bodiesSize + doorsSize + bulletsSize + i) * objectSize)
             )[0];
             return {type, doors, bullets, player, bodies};
         };
 
-        this.encodeRegister = message => {
+        const encodeRegister = message => {
             const nameBytes = message.name ? encoder.encode(message.name) : new Uint8Array();
             const buffer = new ArrayBuffer(5 + nameBytes.length);
             const view = new DataView(buffer);
             //Set type id
             view.setUint8(0, 1);
-            view.setInt32(1, nameBytes.length);
-            nameBytes.forEach((val, i) => view.setUint8(5 + i, val));
+            view.setInt32(byteSize, nameBytes.length);
+            nameBytes.forEach((val, i) => view.setUint8(byteSize + intSize + i, val));
             return {data: buffer, isBinary: true};
-        }
+        };
 
-        this.encodeControls = message => {
+        const encodeControls = message => {
             const buffer = new ArrayBuffer(10);
             const view = new DataView(buffer);
             const controlByte =
@@ -83,27 +84,27 @@ export default class BinaryProtocol {
             //Set type id
             view.setUint8(0, 2);
             //Set controls
-            view.setUint8(1, controlByte);
-            view.setFloat64(2, message.angle);
+            view.setUint8(byteSize, controlByte);
+            view.setFloat64(byteSize * 2, message.angle);
             return {data: buffer, isBinary: true};
-        }
+        };
 
-        this.parseLeaderboard = view => {
+        const parseLeaderboard = view => {
             const type = 'leaderboard';
-            const length = view.getInt32(1);
-            const {leaderboard} = Array(length).fill(1).reduce(({offset, leaderboard}) => {
-                const {entry, newOffset} = this.parseLeaderboardEntry(view, offset)
+            const length = view.getInt32(byteSize);
+            const {leaderboard} = Array(length).fill(0).reduce(({offset, leaderboard}) => {
+                const {entry, newOffset} = parseLeaderboardEntry(view, offset)
                 return {offset: newOffset, leaderboard: [...leaderboard, entry]}
-            }, {offset: 5, leaderboard: []});
+            }, {offset: byteSize + intSize, leaderboard: []});
             return {type, leaderboard}
         }
 
         this.encode = (message) => {
             switch(message.type) {
                 case 'controls':
-                    return this.encodeControls(message)
+                    return encodeControls(message)
                 case 'register':
-                    return this.encodeRegister(message)
+                    return encodeRegister(message)
 
             }
         };
@@ -111,11 +112,11 @@ export default class BinaryProtocol {
             const view = new DataView(data);
             switch(view.getUint8()) {
                 case 1:
-                    return this.parseRegistered(view);
+                    return parseRegistered(view);
                 case 2:
-                    return this.parseUpdates(view);
+                    return parseUpdates(view);
                 case 3:
-                    return this.parseLeaderboard(view)
+                    return parseLeaderboard(view)
             }
         }
     }
