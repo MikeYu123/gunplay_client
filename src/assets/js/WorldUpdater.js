@@ -1,21 +1,20 @@
 import {GlowFilter} from "pixi-filters";
 import LeaderBoard from './Leaderboard'
+import BinaryProtocol from './BinaryProtocol';
 import {debounce} from './utils'
 
 const LeadBoard = new LeaderBoard( {host: window.document.documentElement});
 export default class WorldUpdater {
-    constructor({ world, player }) {
+    constructor({ world, player, protocol }) {
         this.world = world;
         this.player = player;
     }
 
     update(message) {
-        const { data } = message;
-        const parsedData = JSON.parse(data);
-        const { type } = parsedData;
+        const { type } = message;
         switch (type) {
             case "updates":
-                const {bodies, bullets, doors, player} = JSON.parse(data);
+                const {bodies, bullets, doors, player} = message;
                 this.world.flush();
                 bodies.forEach(body => {
                     this.world.addBody(body, false);
@@ -38,10 +37,10 @@ export default class WorldUpdater {
                 this.world.refresh();
                 break;
             case "leaderboard":
-                debounce(LeadBoard.update( parsedData.leaderboard ), 300)
+                debounce(LeadBoard.update( message.leaderboard ), 300)
                 break;
             case "registered":
-                this.player.uuid = parsedData.id;
+                this.player.uuid = message.id;
 
         }
     }

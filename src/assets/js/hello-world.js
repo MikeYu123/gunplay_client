@@ -16,11 +16,13 @@ import SocketControl from './socket-control'
 import ControlsUpdater from './ControlsUpdater';
 import WorldUpdater from './WorldUpdater';
 import nipplejs from 'nipplejs';
-const defaultAddress = 'ws://localhost:8090';
+// const defaultAddress = 'ws://localhost:8090';
 const defaultName = 'huy';
-const apiAddress = 'http://localhost:8090';
-// const defaultAddress = 'ws://192.168.46.145:8090';
-// const apiAddress = 'http://192.168.46.145:8090';
+import JsonProtocol from './JsonProtocol';
+import BinaryProtocol from './BinaryProtocol';
+// const apiAddress = 'http://localhost:8090';
+const defaultAddress = 'ws://192.168.46.145:8090';
+const apiAddress = 'http://192.168.46.145:8090';
 const windowHeight = window.innerHeight;
 const windowWidth = window.innerWidth;
 
@@ -75,8 +77,10 @@ export default class Game {
                     walls.forEach(wall => world.addWall(wall));
                     const player = new Player({});
                     const controlsRegistry = this.control(world)
-                    const worldUpdater = new WorldUpdater({player, world});
-                    const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater, name });
+                    // const protocol = new JsonProtocol();
+                    const protocol = new BinaryProtocol();
+                    const worldUpdater = new WorldUpdater({player, world, protocol});
+                    const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater, name, protocol });
                     const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 70});
                     socketControl.start().then(controlsUpdater.setup);
 
