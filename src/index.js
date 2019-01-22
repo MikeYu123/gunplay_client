@@ -2,7 +2,7 @@ import './assets/styles/styles.scss';
 import MobileDetect from 'mobile-detect';
 const device = new MobileDetect(window.navigator.userAgent);
 
-import Game from './assets/js/hello-world';
+import Game from './assets/js/core/Game';
 
 require('html-loader!./templates/index.html');
 

@@ -1,25 +1,25 @@
 import pixi from 'pixi'
 import * as PIXI from 'pixi.js'
-import World from './world'
+import World from '../views/World'
 // import BodyTexture from '../images/gun1.png'
-import BodyTexture from '../images/player.png'
+import BodyTexture from '../../images/player.png'
 // import BulletTexture from '../images/noj.png'
-import BulletTexture from '../images/bullet.png'
-import DoorTexture from '../images/door_wood.png'
-import WallTexture from '../images/brick_wall.png'
-import Body from './body'
-import Wall from './wall'
-import Player from './player'
-import ControlsRegistry from './controls-registry'
-import NippleControlsRegistry from './NippleControlsRegistry'
-import SocketControl from './socket-control'
+import BulletTexture from '../../images/bullet.png'
+import DoorTexture from '../../images/door_wood.png'
+import WallTexture from '../../images/brick_wall.png'
+import Body from '../objects/Body'
+import Wall from '../objects/Wall'
+import Player from './Player'
+import ControlsRegistry from '../controls/KeyControlsRegistry'
+import NippleControlsRegistry from '../controls/NippleControlsRegistry'
+import SocketControl from './SocketControl'
 import ControlsUpdater from './ControlsUpdater';
 import WorldUpdater from './WorldUpdater';
 import nipplejs from 'nipplejs';
 // const defaultAddress = 'ws://localhost:8090';
 const defaultName = 'huy';
-import JsonProtocol from './JsonProtocol';
-import BinaryProtocol from './BinaryProtocol';
+import JsonProtocol from '../protocols/JsonProtocol';
+import BinaryProtocol from '../protocols/BinaryProtocol';
 // const apiAddress = 'http://localhost:8090';
 const defaultAddress = 'ws://192.168.46.145:8090';
 const apiAddress = 'http://192.168.46.145:8090';

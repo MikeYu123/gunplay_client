@@ -1,7 +1,7 @@
 import {GlowFilter} from "pixi-filters";
-import LeaderBoard from './Leaderboard'
-import BinaryProtocol from './BinaryProtocol';
-import {debounce} from './utils'
+import LeaderBoard from '../views/Leaderboard'
+import BinaryProtocol from '../protocols/BinaryProtocol';
+import {debounce} from '../utils/debounce'
 
 const LeadBoard = new LeaderBoard( {host: window.document.documentElement});
 export default class WorldUpdater {

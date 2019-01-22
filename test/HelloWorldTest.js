@@ -1,6 +1,6 @@
 'use strict';
 
-import HelloWorld from './../src/assets/js/hello-world.js';
+import HelloWorld from '../src/assets/js/core/Game.js';
 
 describe('HelloWorld test', () => {
     it('should return greetings', () => {

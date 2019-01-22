@@ -12,7 +12,7 @@ const keyDown = 40;
 const keyRight = 39;
 
 //TODO resolve name confusion(keyUp & onKeyUp)
-export default class ControlsRegisgtry {
+export default class KeyControlsRegisgtry {
   constructor({centerX, centerY}) {
     this.centerY = centerY;
     this.centerX = centerX;

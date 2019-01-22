@@ -1,10 +1,10 @@
 /**
  * Created by mihailurcenkov on 19.07.17.
  */
-import Door from './door'
-import Wall from './wall'
-import Bullet from './bullet'
-import Body from './body'
+import Door from '../objects/Door'
+import Wall from '../objects/Wall'
+import Bullet from '../objects/Bullet'
+import Body from '../objects/Body'
 
 
 export default class World {
