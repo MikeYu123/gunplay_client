@@ -2,8 +2,7 @@
  * Created by mihailurcenkov on 18.07.17.
  */
 import {Texture, Sprite} from 'pixi.js'
-
-const bulletSpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .06, y: .06} };
+import {bulletSpriteDefaults} from '../configs/application';
 
 export default class Bullet {
   presetSprite({x, y, angle, texture}) {

@@ -7,12 +7,12 @@ export default class SocketControl {
     this.address = address;
     this.updater = updater;
     this.name = name;
-    this.protocol = protocol
+    this.protocol = protocol;
 
     this.start = () => {
         this.socket = new WebSocket(this.address);
         this.socket.binaryType = 'arraybuffer';
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _) => {
             this.socket.onopen = () => {
                 this.initPlayer();
                 resolve()
