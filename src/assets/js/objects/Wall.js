@@ -9,16 +9,11 @@ export default class Wall {
     this.x = x;
     this.y = y;
     this.angle = angle;
-    this.texture = texture;
     this.width = width;
     this.height = height;
+    this.sprite = new TilingSprite(texture, width, height);
+    Object.assign(this.sprite, wallSpriteDefaults);
+    Object.assign(this.sprite.position, {x, y});
 
-    this.presetSprite = ({x, y, width, height, texture}) => {
-        this.sprite = new TilingSprite(texture, width, height);
-        Object.assign(this.sprite, wallSpriteDefaults);
-        Object.assign(this.sprite.position, {x, y});
-    };
-
-    this.presetSprite({x, y, width, height, texture});
   }
 }
