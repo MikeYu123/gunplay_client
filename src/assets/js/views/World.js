@@ -5,11 +5,13 @@ import Door from '../objects/Door'
 import Wall from '../objects/Wall'
 import Bullet from '../objects/Bullet'
 import Body from '../objects/Body'
+import Drop from '../objects/Drop'
 
 
 export default class World {
   constructor({viewSettings, textures}) {
     this.bodies = [];
+    this.drops = [];
     this.walls = [];
     this.bullets = [];
     this.doors = [];
@@ -30,6 +32,13 @@ export default class World {
       this.bodies = [];
     };
 
+    this.flushDrops = () => {
+      this.drops.forEach(drop => {
+        this.app.stage.removeChild(drop.sprite)
+      });
+      this.drops = [];
+    };
+
       this.flushDoors = () => {
           this.doors.forEach(door => {
               this.app.stage.removeChild(door.sprite)
@@ -41,6 +50,7 @@ export default class World {
           this.flushBullets();
           this.flushBodies();
           this.flushDoors();
+          this.flushDrops();
       }
 
       this.resetCenter = ({x, y}) => {
@@ -77,6 +87,17 @@ export default class World {
           }
       }
 
+      const dropTextureForWeapon = weapon => {
+          switch (weapon) {
+              case 'shotgun':
+                  return this.resources.shotgunDrop;
+              case 'pistol':
+                  return this.resources.pistolDrop;
+              case 'riffle':
+                  return this.resources.riffleDrop;
+          }
+      }
+
       this.addBody = ({x, y, angle, weapon}, isPlayer) => {
           const {texture} = bodyTextureForWeapon(weapon);
           const body = new Body({texture, x, y, angle});
@@ -93,6 +114,15 @@ export default class World {
           this.bullets.push(bullet);
           this.app.stage.addChild(bullet.sprite);
           return bullet;
+      };
+      this.addDrop = ({x, y, angle, weapon}) => {
+          console.log(weapon);
+          console.log(dropTextureForWeapon(weapon));
+          const {texture} = dropTextureForWeapon(weapon);
+          const drop = new Drop({x, y, angle, texture});
+          this.drops.push(drop);
+          this.app.stage.addChild(drop.sprite);
+          return drop;
       };
       this.addWall = ({ x, y, angle, width, height}) => {
           const {texture} = this.resources.wall;
@@ -111,11 +141,14 @@ export default class World {
 
       this.initLoader = () => {
           this.loader = PIXI.loader;
-          const {pistolBody, shotgunBody, riffleBody, unarmedBody, wall, bullet, door} = textures;
+          const {pistolBody, shotgunBody, riffleBody, unarmedBody, wall, bullet, door, pistolDrop, shotgunDrop, riffleDrop} = textures;
           this.loader.add('pistolBody', pistolBody);
           this.loader.add('shotgunBody', shotgunBody);
           this.loader.add('riffleBody', riffleBody);
           this.loader.add('unarmedBody', unarmedBody);
+          this.loader.add('riffleDrop', riffleDrop);
+          this.loader.add('shotgunDrop', shotgunDrop);
+          this.loader.add('pistolDrop', pistolDrop);
           this.loader.add('wall', wall);
           this.loader.add('bullet', bullet);
           this.loader.add('door', door);

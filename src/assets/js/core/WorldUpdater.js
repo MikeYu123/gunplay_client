@@ -12,7 +12,7 @@ export default class WorldUpdater {
                 const {type} = message;
                 switch (type) {
                     case 'updates':
-                        const {bodies, bullets, doors, player} = message;
+                        const {bodies, bullets, doors, player, drops} = message;
                         this.world.flush();
                         bodies.forEach(body => {
                             this.world.addBody(body, false);
@@ -22,6 +22,9 @@ export default class WorldUpdater {
                         });
                         doors.forEach(door => {
                             this.world.addDoor(door);
+                        });
+                        drops.forEach(drop => {
+                            this.world.addDrop(drop);
                         });
                         if (player) {
                             this.world.addBody(player, true);

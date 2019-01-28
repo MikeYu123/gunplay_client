@@ -38,7 +38,7 @@ export default class BinaryProtocol {
         const parseDrop = (view, offset) => {
             const x = view.getFloat64(offset);
             const y = view.getFloat64(offset + doubleSize);
-            const weapon = parseWeapon(view.getUint8(offset + doubleSize * 4));
+            const weapon = parseWeapon(view.getUint8(offset + doubleSize * 2));
             return {x, y, weapon};
 
         };
