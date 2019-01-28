@@ -29,9 +29,13 @@ const textures = {
     door: DoorTexture,
     wall: WallTexture
 };
+// const backend = {
+//     ws: 'ws://192.168.46.145:8090',
+//     api: 'http://192.168.46.145:8090'
+// };
 const backend = {
-    ws: 'ws://192.168.46.145:8090',
-    api: 'http://192.168.46.145:8090'
+    ws: 'ws://localhost:8090',
+    api: 'http://localhost:8090'
 };
 const controlsUpdaterSettings = {
     timeout: 70

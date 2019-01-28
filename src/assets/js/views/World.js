@@ -78,7 +78,6 @@ export default class World {
       }
 
       this.addBody = ({x, y, angle, weapon}, isPlayer) => {
-          console.log(weapon);
           const {texture} = bodyTextureForWeapon(weapon);
           const body = new Body({texture, x, y, angle});
           if (isPlayer) {

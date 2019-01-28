@@ -99,7 +99,7 @@ export default class BinaryProtocol {
             const offsetAfterDoors = offsetAfterBullets + intSize + doorsLength * objectSize;
 
             const dropsLength = view.getInt32(offsetAfterDoors);
-            const drops = Array(doorsLength).fill(0).map((_, i) => {
+            const drops = Array(dropsLength).fill(0).map((_, i) => {
                 const offset = offsetAfterDoors + intSize + i * dropSize
                 return parseDrop(view, offset)
             });
@@ -109,7 +109,7 @@ export default class BinaryProtocol {
             const playerLength = view.getInt32(offsetAfterDrops);
             const player = Array(playerLength).fill(0).map((_, i) => {
                 const offset = offsetAfterDrops + intSize + i * playerSize
-                parsePlayer(view, offset)
+                return parsePlayer(view, offset)
             })[0];
             return {type, doors, bullets, player, bodies, drops};
         };
