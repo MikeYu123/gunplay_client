@@ -66,5 +66,6 @@ export {
     defaultName,
     protocol,
     viewSettings,
-    nippleControlsSettings
+    nippleControlsSettings,
+    dropSpriteDefaults
 };

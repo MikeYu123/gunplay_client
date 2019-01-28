@@ -115,11 +115,9 @@ export default class World {
           this.app.stage.addChild(bullet.sprite);
           return bullet;
       };
-      this.addDrop = ({x, y, angle, weapon}) => {
-          console.log(weapon);
-          console.log(dropTextureForWeapon(weapon));
+      this.addDrop = ({x, y, weapon}) => {
           const {texture} = dropTextureForWeapon(weapon);
-          const drop = new Drop({x, y, angle, texture});
+          const drop = new Drop({x, y, texture});
           this.drops.push(drop);
           this.app.stage.addChild(drop.sprite);
           return drop;

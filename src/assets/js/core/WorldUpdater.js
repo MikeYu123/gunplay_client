@@ -33,7 +33,7 @@ export default class WorldUpdater {
                         this.world.refresh();
                         break;
                     case 'leaderboard':
-                        debounce(LeadBoard.update(message.leaderboard), leaderboardDefaults.debounce.timeout)
+                        debounce(LeadBoard.update(message.leaderboard), leaderboardDefaults.debounce.timeout);
                         break;
                     case 'registered':
                         this.player.uuid = message.id;
