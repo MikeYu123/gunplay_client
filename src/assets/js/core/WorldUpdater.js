@@ -5,13 +5,14 @@ import {debounce} from '../utils/debounce'
 
 const LeadBoard = new LeaderBoard( {host: window.document.documentElement});
 export default class WorldUpdater {
-    constructor({ world, player, protocol }) {
+    constructor({ world, player }) {
         this.world = world;
         this.player = player;
     }
 
     update(message) {
         const { type } = message;
+        console.log(message);
         switch (type) {
             case "updates":
                 const {bodies, bullets, doors, player} = message;

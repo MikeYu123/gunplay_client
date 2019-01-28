@@ -8,7 +8,20 @@ export default class BinaryProtocol {
         const doubleSize = 8;
         const byteSize = 1;
         const decoder = new TextDecoder("utf-8");
-        const encoder = new TextEncoder('utf-8')
+        const encoder = new TextEncoder('utf-8');
+
+        const parseWeapon = (weaponByte) => {
+            switch(weaponByte) {
+                case 0:
+                    return "unarmed";
+                case 1:
+                    return "pistol";
+                case 2:
+                    return "shotgun";
+                case 3:
+                    return "riffle";
+            }
+        }
 
         const parseObject = (view, offset) => {
             const x = view.getFloat64(offset);
@@ -16,7 +29,19 @@ export default class BinaryProtocol {
             const angle = view.getFloat64(offset + doubleSize * 2);
             const width = view.getFloat64(offset + doubleSize * 3);
             const height = view.getFloat64(offset + doubleSize * 4);
-            return {x, y, angle, width, height}
+            return {x, y, angle, width, height};
+
+        };
+
+        const parsePlayer = (view, offset) => {
+            const x = view.getFloat64(offset);
+            const y = view.getFloat64(offset + doubleSize);
+            const angle = view.getFloat64(offset + doubleSize * 2);
+            const width = view.getFloat64(offset + doubleSize * 3);
+            const height = view.getFloat64(offset + doubleSize * 4);
+            const weapon = parseWeapon(view.getUint8(offset + doubleSize * 5));
+            const ammo = view.getFloat64(offset + doubleSize * 5 + byteSize);
+            return {x, y, angle, width, height, weapon, ammo};
 
         };
 
@@ -56,7 +81,7 @@ export default class BinaryProtocol {
             )
             const playerSize = view.getInt32(byteSize + intSize * 3 + (bodiesSize + bulletsSize + doorsSize) * objectSize);
             const player = Array(playerSize).fill(0).map((_, i) =>
-                parseObject(view, byteSize + intSize * 4 + (bodiesSize + doorsSize + bulletsSize + i) * objectSize)
+                parsePlayer(view, byteSize + intSize * 4 + (bodiesSize + doorsSize + bulletsSize + i) * objectSize)
             )[0];
             return {type, doors, bullets, player, bodies};
         };

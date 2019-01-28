@@ -1,7 +1,8 @@
 /**
  * Created by mihailurcenkov on 18.07.17.
  */
-import {TilingSprite} from 'pixi.js'
+import {extras} from 'pixi.js'
+const {TilingSprite} = extras
 
 const wallSpriteDefaults = { anchor: { x: .5, y: .5 }, tileScale: {x: .5, y: .5}};
 
