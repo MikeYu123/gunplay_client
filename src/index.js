@@ -7,5 +7,5 @@ import Game from './assets/js/core/Game';
 require('html-loader!./templates/index.html');
 
 const name = prompt('Enter your name');
-const game = new Game(name, !!device.mobile());
+const game = new Game(name, !!device.mobile(), 0);
 game.start();

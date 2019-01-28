@@ -10,12 +10,14 @@ export default class NippleControlsRegistry {
         this.angleAndShotManager = angleAndShotManager;
         this.up = this.down = this.right = this.left = this.click = false;
         this.angle = 0;
+
         this.setDirection = degree => {
             this.right = 60 > degree && degree >= 0 || 360 > degree && degree >= 300;
             this.up = 150 > degree && degree >= 30;
             this.down = 210 < degree && degree <= 330;
             this.left = 120 < degree && degree <= 240;
         };
+
         this.resetDirection = () => {
             this.up = this.down = this.left = this.right = false
         };
@@ -32,7 +34,7 @@ export default class NippleControlsRegistry {
             this.click = true
             this.angle = -eventData.angle.radian;
         });
-        this.angleAndShotManager.on('end', (_, eventData) => {
+        this.angleAndShotManager.on('end', () => {
             this.click = false
         });
 

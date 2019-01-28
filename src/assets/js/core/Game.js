@@ -7,14 +7,10 @@ import SocketControl from './SocketControl'
 import ControlsUpdater from './ControlsUpdater';
 import WorldUpdater from './WorldUpdater';
 import nipplejs from 'nipplejs';
-const windowHeight = window.innerHeight;
-const windowWidth = window.innerWidth;
 
 export default class Game {
-    constructor(name = defaultName, mobile = false, address = backend.api + '/levels/0', width = windowHeight, height = windowWidth){
-        this.address = address;
-        this.mobile = mobile;
-
+    constructor(name = defaultName, mobile = false, level = 0){
+        //FIXME maybe move DOM interacting code somewhere
         this.control = (world) => {
             if (this.mobile) {
                 const div1 = document.createElement('div');
@@ -44,16 +40,24 @@ export default class Game {
             }
         };
 
-        this.fetchWorld = () => fetch(this.address).then(r => r.json());
+        this.fetchWorld = () => fetch(`${backend.api}/levels/${level}`).then(r => r.json());
+
         this.start = () => {
-            const ready = world => {
-                this.fetchWorld().then(data => {
+            this.fetchWorld().then(data => {
+                const world = new World(
+                    {
+                        viewSettings,
+                        textures,
+                    });
+
+                    world.initLoader(textures).then(() => {
                     const {walls} = data;
                     walls.forEach(wall => world.addWall(wall));
 
                     const player = new Player({});
 
                     const controlsRegistry = this.control(world);
+
                     const worldUpdater = new WorldUpdater({player, world, protocol});
 
                     const socketControl = new SocketControl({address: backend.ws, updater: worldUpdater, name, protocol });
@@ -63,15 +67,8 @@ export default class Game {
                     socketControl.start().then(controlsUpdater.setup);
 
                     document.body.appendChild(world.app.view);
-                });
-            };
-
-            new World(
-                {
-                    viewSettings,
-                    textures,
-                    ready
-                });
+                })
+            });
         };
     }
 
