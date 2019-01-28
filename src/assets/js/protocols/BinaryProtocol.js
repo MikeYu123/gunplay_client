@@ -7,19 +7,19 @@ export default class BinaryProtocol {
         const intSize = 4;
         const doubleSize = 8;
         const byteSize = 1;
-        const decoder = new TextDecoder("utf-8");
+        const decoder = new TextDecoder('utf-8');
         const encoder = new TextEncoder('utf-8');
 
         const parseWeapon = (weaponByte) => {
             switch(weaponByte) {
                 case 0:
-                    return "unarmed";
+                    return 'unarmed';
                 case 1:
-                    return "pistol";
+                    return 'pistol';
                 case 2:
-                    return "shotgun";
+                    return 'shotgun';
                 case 3:
-                    return "riffle";
+                    return 'riffle';
             }
         }
 
