@@ -26,7 +26,6 @@ export default class WorldUpdater {
                         if (player) {
                             this.world.addBody(player, true);
                             this.world.resetCenter(player);
-
                         }
                         this.world.refresh();
                         break;

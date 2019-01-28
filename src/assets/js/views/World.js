@@ -55,7 +55,14 @@ export default class World {
       this.app = new PIXI.Application(viewSettings);
       //FIXME: experimental stuff
       Object.assign(this.app.stage, viewSettings);
-      this.app.renderer.resize(viewSettings.width, viewSettings.height);
+
+      this.resize = ({width, height}) => {
+        this.width = width;
+        this.height = height;
+        this.app.renderer.resize(width, height);
+      }
+
+      this.resize(viewSettings);
 
       this.addBody = ({x, y, angle}, isPlayer) => {
           const {texture} = this.resources.body;

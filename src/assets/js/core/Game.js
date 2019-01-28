@@ -13,7 +13,6 @@ export default class Game {
         //FIXME maybe move DOM interacting code somewhere
         this.control = (world) => {
             if (mobile) {
-                console.log('got here');
                 const div1 = document.createElement('div');
                 div1.id = 'directionManager';
                 div1.className = 'nippleContainer';
@@ -66,6 +65,11 @@ export default class Game {
                     const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: controlsUpdaterSettings.timeout});
 
                     socketControl.start().then(controlsUpdater.setup);
+
+                    window.onresize = () =>
+                      world.resize({
+                            width: window.innerWidth - 20,
+                            height: window.innerHeight - 20});
 
                     document.body.appendChild(world.app.view);
                 })
