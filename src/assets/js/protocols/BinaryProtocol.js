@@ -3,7 +3,8 @@ import uuid from 'uuid-js';
 export default class BinaryProtocol {
     constructor() {
         const objectSize = 40;
-        const playerMessageSize = 49;
+        const playerSize = 49;
+        const dropSize = 17;
         const uuidSize = 16;
         const intSize = 4;
         const doubleSize = 8;
@@ -31,6 +32,14 @@ export default class BinaryProtocol {
             const width = view.getFloat64(offset + doubleSize * 3);
             const height = view.getFloat64(offset + doubleSize * 4);
             return {x, y, angle, width, height};
+
+        };
+
+        const parseDrop = (view, offset) => {
+            const x = view.getFloat64(offset);
+            const y = view.getFloat64(offset + doubleSize);
+            const weapon = parseWeapon(view.getUint8(offset + doubleSize * 4));
+            return {x, y, weapon};
 
         };
 
@@ -69,22 +78,40 @@ export default class BinaryProtocol {
         const parseUpdates = view => {
             const type = 'updates';
             const bodiesLength = view.getInt32(byteSize);
-            const bodies = Array(bodiesLength).fill(0).map((_, i) =>
-                parsePlayer(view, byteSize + intSize + i * playerMessageSize)
-            );
-            const bulletsLength = view.getInt32(byteSize + intSize + bodiesLength * playerMessageSize);
-            const bullets = Array(bulletsLength).fill(0).map((_, i) =>
-                parseObject(view, byteSize + intSize * 2 + i * objectSize + bodiesLength * playerMessageSize)
-            );
-            const doorsLength = view.getInt32(byteSize + intSize * 2 + bulletsLength * objectSize + bodiesLength * playerMessageSize);
-            const doors = Array(doorsLength).fill(0).map((_, i) =>
-                parseObject(view, byteSize + intSize * 3 + (bulletsLength + i) * objectSize + bodiesLength * playerMessageSize)
-            );
-            const playerLength = view.getInt32(byteSize + intSize * 3 + (bulletsLength + doorsLength) * objectSize + bodiesLength * playerMessageSize);
-            const player = Array(playerLength).fill(0).map((_, i) =>
-                parsePlayer(view, byteSize + intSize * 4 + (doorsLength + bulletsLength) * objectSize + (bodiesLength + i) * playerMessageSize)
-            )[0];
-            return {type, doors, bullets, player, bodies};
+            const bodies = Array(bodiesLength).fill(0).map((_, i) => {
+                const offset = byteSize + intSize + i * playerSize;
+                return parsePlayer(view, offset);
+            });
+            const offsetAfterBodies = byteSize + intSize + bodiesLength * playerSize;
+
+            const bulletsLength = view.getInt32(offsetAfterBodies);
+            const bullets = Array(bulletsLength).fill(0).map((_, i) => {
+                const offset = offsetAfterBodies + intSize + i * objectSize;
+                return parseObject(view, offset)
+            });
+            const offsetAfterBullets = offsetAfterBodies + intSize + bulletsLength * objectSize;
+
+            const doorsLength = view.getInt32(offsetAfterBullets);
+            const doors = Array(doorsLength).fill(0).map((_, i) => {
+                const offset = offsetAfterBullets + intSize + i * objectSize;
+                return parseObject(view, offset);
+            });
+            const offsetAfterDoors = offsetAfterBullets + intSize + doorsLength * objectSize;
+
+            const dropsLength = view.getInt32(offsetAfterDoors);
+            const drops = Array(doorsLength).fill(0).map((_, i) => {
+                const offset = offsetAfterDoors + intSize + i * dropSize
+                return parseDrop(view, offset)
+            });
+            //TODO it drops with exception
+            const offsetAfterDrops = offsetAfterDoors + intSize + dropsLength * dropSize;
+
+            const playerLength = view.getInt32(offsetAfterDrops);
+            const player = Array(playerLength).fill(0).map((_, i) => {
+                const offset = offsetAfterDrops + intSize + i * playerSize
+                parsePlayer(view, offset)
+            })[0];
+            return {type, doors, bullets, player, bodies, drops};
         };
 
         const encodeRegister = message => {
