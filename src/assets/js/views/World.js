@@ -89,8 +89,9 @@ export default class World {
           return door;
       };
 
-      this.initLoader = ({body, wall, bullet, door}) => {
+      this.initLoader = () => {
           this.loader = PIXI.loader;
+          const {body, wall, bullet, door} = textures;
           this.loader.add('body', body);
           this.loader.add('wall', wall);
           this.loader.add('bullet', bullet);

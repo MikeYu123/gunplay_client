@@ -1,8 +1,9 @@
 import './assets/styles/styles.scss';
 import MobileDetect from 'mobile-detect';
+import Game from './assets/js/core/Game';
+
 const device = new MobileDetect(window.navigator.userAgent);
 
-import Game from './assets/js/core/Game';
 
 require('html-loader!./templates/index.html');
 

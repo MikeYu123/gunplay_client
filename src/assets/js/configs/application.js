@@ -24,6 +24,9 @@ const backend = {
 const controlsUpdaterSettings = {
     timeout: 70
 };
+const nippleControlsSettings = {
+    timeout: 8
+};
 //FIXME: Is it ok to use window object here?
 const viewSettings  = {
     width: window.innerWidth - 20,
@@ -44,5 +47,6 @@ export {
     controlsUpdaterSettings,
     defaultName,
     protocol,
-    viewSettings
+    viewSettings,
+    nippleControlsSettings
 };

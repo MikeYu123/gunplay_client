@@ -1,6 +1,4 @@
-import {GlowFilter} from "pixi-filters";
 import LeaderBoard from '../views/Leaderboard'
-import BinaryProtocol from '../protocols/BinaryProtocol';
 import {debounce} from '../utils/debounce'
 import {leaderboardDefaults} from '../configs/application';
 
@@ -13,7 +11,7 @@ export default class WorldUpdater {
             {
                 const {type} = message;
                 switch (type) {
-                    case "updates":
+                    case 'updates':
                         const {bodies, bullets, doors, player} = message;
                         this.world.flush();
                         bodies.forEach(body => {
@@ -32,10 +30,10 @@ export default class WorldUpdater {
                         }
                         this.world.refresh();
                         break;
-                    case "leaderboard":
+                    case 'leaderboard':
                         debounce(LeadBoard.update(message.leaderboard), leaderboardDefaults.debounce.timeout)
                         break;
-                    case "registered":
+                    case 'registered':
                         this.player.uuid = message.id;
 
                 }

@@ -2,6 +2,10 @@
  * Created by mihailurcenkov on 18.07.17.
  */
 
+import {debounce} from '../utils/debounce'
+import {nippleControlsSettings} from '../configs/application';
+const {timeout} = nippleControlsSettings;
+
 //TODO resolve name confusion(keyUp & onKeyUp)
 export default class NippleControlsRegistry {
     constructor({directionManager, angleManager, angleAndShotManager}) {
@@ -21,22 +25,23 @@ export default class NippleControlsRegistry {
         this.resetDirection = () => {
             this.up = this.down = this.left = this.right = false
         };
-        this.directionManager.on('move', (_, eventData) => {
+        this.directionManager.on('move', debounce((_, eventData) => {
             this.setDirection(eventData.angle.degree)
-        });
-        this.directionManager.on('end', this.resetDirection);
+        }, timeout));
+        this.directionManager.on('end', debounce(this.resetDirection, timeout));
 
-        this.angleManager.on('move', (_, eventData) => {
+        this.angleManager.on('move', debounce((_, eventData) => {
             this.angle = -eventData.angle.radian;
-        });
+        }, timeout));
 
-        this.angleAndShotManager.on('move', (_, eventData) => {
-            this.click = true
+        this.angleAndShotManager.on('move', debounce((_, eventData) => {
+            this.click = true;
             this.angle = -eventData.angle.radian;
-        });
-        this.angleAndShotManager.on('end', () => {
-            this.click = false
-        });
+        }, timeout));
+
+        this.angleAndShotManager.on('end', debounce(() => {
+            this.click = false;
+        }, timeout));
 
         this.flush = () => {
             return {

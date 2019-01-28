@@ -12,7 +12,8 @@ export default class Game {
     constructor(name = defaultName, mobile = false, level = 0){
         //FIXME maybe move DOM interacting code somewhere
         this.control = (world) => {
-            if (this.mobile) {
+            if (mobile) {
+                console.log('got here');
                 const div1 = document.createElement('div');
                 div1.id = 'directionManager';
                 div1.className = 'nippleContainer';
@@ -47,10 +48,10 @@ export default class Game {
                 const world = new World(
                     {
                         viewSettings,
-                        textures,
+                        textures
                     });
 
-                    world.initLoader(textures).then(() => {
+                    world.initLoader().then(() => {
                     const {walls} = data;
                     walls.forEach(wall => world.addWall(wall));
 
