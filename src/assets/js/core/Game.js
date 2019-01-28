@@ -1,14 +1,5 @@
-import pixi from 'pixi'
-import * as PIXI from 'pixi.js'
 import World from '../views/World'
-// import BodyTexture from '../images/gun1.png'
-import BodyTexture from '../../images/player.png'
-// import BulletTexture from '../images/noj.png'
-import BulletTexture from '../../images/bullet.png'
-import DoorTexture from '../../images/door_wood.png'
-import WallTexture from '../../images/brick_wall.png'
-import Body from '../objects/Body'
-import Wall from '../objects/Wall'
+import {textures, backend, controlsUpdaterSettings, defaultName, protocol, viewSettings} from '../configs/application';
 import Player from './Player'
 import ControlsRegistry from '../controls/KeyControlsRegistry'
 import NippleControlsRegistry from '../controls/NippleControlsRegistry'
@@ -16,24 +7,11 @@ import SocketControl from './SocketControl'
 import ControlsUpdater from './ControlsUpdater';
 import WorldUpdater from './WorldUpdater';
 import nipplejs from 'nipplejs';
-// const defaultAddress = 'ws://localhost:8090';
-const defaultName = 'huy';
-import JsonProtocol from '../protocols/JsonProtocol';
-import BinaryProtocol from '../protocols/BinaryProtocol';
-// const apiAddress = 'http://localhost:8090';
-const defaultAddress = 'ws://192.168.46.145:8090';
-const apiAddress = 'http://192.168.46.145:8090';
 const windowHeight = window.innerHeight;
 const windowWidth = window.innerWidth;
 
-
-// const angleManager = {}
-
-// if(device.mobile()) {
-//     nipplejs.create({size: 150, maxNumberOfNipples: 2, multitouch: true, color: 'black'});
-// }
 export default class Game {
-    constructor(name = defaultName, mobile = false, address = apiAddress + '/levels/0'){
+    constructor(name = defaultName, mobile = false, address = backend.api + '/levels/0', width = windowHeight, height = windowWidth){
         this.address = address;
         this.mobile = mobile;
 
@@ -57,31 +35,31 @@ export default class Game {
                 return new NippleControlsRegistry({directionManager, angleManager, angleAndShotManager});
             }
             else {
-                const controlsRegistry = new ControlsRegistry({centerX: world.centerX(), centerY: world.centerY()});
+                const controlsRegistry = new ControlsRegistry({centerX: world.centerX, centerY: world.centerY});
                 window.onkeydown = controlsRegistry.onKeyDown;
                 window.onkeyup = controlsRegistry.onKeyUp;
                 window.onclick = controlsRegistry.onClick;
                 window.onmousemove = controlsRegistry.onDocumentMouseMove;
                 return controlsRegistry;
             }
-        }
+        };
+
         this.fetchWorld = () => fetch(this.address).then(r => r.json());
         this.start = () => {
-            const width = windowWidth - 20;
-            const height = windowHeight - 20;
-            const transparent = true;
-
             const ready = world => {
                 this.fetchWorld().then(data => {
                     const {walls} = data;
                     walls.forEach(wall => world.addWall(wall));
+
                     const player = new Player({});
-                    const controlsRegistry = this.control(world)
-                    // const protocol = new JsonProtocol();
-                    const protocol = new BinaryProtocol();
+
+                    const controlsRegistry = this.control(world);
                     const worldUpdater = new WorldUpdater({player, world, protocol});
-                    const socketControl = new SocketControl({address: defaultAddress, updater: worldUpdater, name, protocol });
-                    const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: 70});
+
+                    const socketControl = new SocketControl({address: backend.ws, updater: worldUpdater, name, protocol });
+
+                    const controlsUpdater = new ControlsUpdater({controlsRegistry, socketControl, timeout: controlsUpdaterSettings.timeout});
+
                     socketControl.start().then(controlsUpdater.setup);
 
                     document.body.appendChild(world.app.view);
@@ -90,13 +68,8 @@ export default class Game {
 
             new World(
                 {
-                    appSettings: {width, height, transparent},
-                    textures: {
-                        body: BodyTexture,
-                        bullet: BulletTexture,
-                        door: DoorTexture,
-                        wall: WallTexture
-                    },
+                    viewSettings,
+                    textures,
                     ready
                 });
         };

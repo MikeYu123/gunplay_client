@@ -8,24 +8,24 @@ import Body from '../objects/Body'
 
 
 export default class World {
-  constructor({appSettings, textures, ready}) {
+  constructor({viewSettings, textures, ready}) {
     this.bodies = [];
     this.walls = [];
     this.bullets = [];
     this.doors = [];
-    this.initApp(appSettings);
+    this.initApp(viewSettings);
     this.initLoader(textures, ready);
-    this.width = appSettings.width;
-    this.height = appSettings.height;
+    this.width = viewSettings.width;
+    this.height = viewSettings.height;
+
   }
 
-  centerX(){
-    //TODO: stage size is tricky, maybe there is a problem with sizes
+  get centerX() {
     return this.width / 2
   }
 
-  centerY(){
-    return this.height / 2
+  get centerY() {
+      return this.height / 2
   }
 
   flushBullets() {
@@ -56,8 +56,8 @@ export default class World {
   }
 
   resetCenter({x, y}) {
-    this.app.stage.position.x = this.centerX() - x;
-    this.app.stage.position.y = this.centerY() - y;
+    this.app.stage.position.x = this.centerX - x;
+    this.app.stage.position.y = this.centerY - y;
   }
 
   initApp({width, height, transparent}) {
