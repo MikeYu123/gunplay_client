@@ -25,7 +25,7 @@ const controlsUpdaterSettings = {
     timeout: 70
 };
 const nippleControlsSettings = {
-    timeout: 8
+    timeout: 5
 };
 //FIXME: Is it ok to use window object here?
 const viewSettings  = {
