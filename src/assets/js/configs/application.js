@@ -1,4 +1,10 @@
-import BodyTexture from '../../images/player.png'
+import PistolDropTexture from '../../images/pistol.png'
+import ShotgunDropTexture from '../../images/shotgun.png'
+import RiffleDropTexture from '../../images/riffle.png'
+import PistolBodyTexture from '../../images/pistolPlayer.png'
+import UnarmedBodyTexture from '../../images/unarmedPlayer.png'
+import ShotgunBodyTexture from '../../images/shotgunPlayer.png'
+import RiffleBodyTexture from '../../images/rifflePlayer.png'
 import BulletTexture from '../../images/bullet.png'
 import DoorTexture from '../../images/door_wood.png'
 import WallTexture from '../../images/brick_wall.png'
@@ -7,12 +13,18 @@ import BinaryProtocol from '../protocols/BinaryProtocol';
 
 const wallSpriteDefaults = { anchor: { x: .5, y: .5 }, tileScale: {x: .5, y: .5}};
 const doorSpriteDefaults = { anchor: { x: .5, y: 0.5 }};
-const bodySpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .1, y: .1} };
+const bodySpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .12, y: .12} };
 const bulletSpriteDefaults = { anchor: { x: .5, y: .5 },  scale: {x: .05, y: .05} };
 const playerBodyGlowSettings = {distance: 10, outerStrength: 1, innerStrength: 1, color: 0x999900, quality: .5};
 const leaderboardDefaults = {debounce: {timeout: 300}};
 const textures = {
-    body: BodyTexture,
+    pistolBody: PistolBodyTexture,
+    shotgunBody: ShotgunBodyTexture,
+    unarmedBody: UnarmedBodyTexture,
+    riffleBody: RiffleBodyTexture,
+    pistolDrop: PistolDropTexture,
+    shotgunDrop: ShotgunDropTexture,
+    riffleDrop: RiffleDropTexture,
     bullet: BulletTexture,
     door: DoorTexture,
     wall: WallTexture
@@ -34,6 +46,7 @@ const viewSettings  = {
     transparent: true
 }
 const protocol = new BinaryProtocol();
+// const protocol = new JsonProtocol();
 const defaultName = 'huy';
 export {
     wallSpriteDefaults,

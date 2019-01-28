@@ -3,6 +3,7 @@ import uuid from 'uuid-js';
 export default class BinaryProtocol {
     constructor() {
         const objectSize = 40;
+        const playerMessageSize = 49;
         const uuidSize = 16;
         const intSize = 4;
         const doubleSize = 8;
@@ -67,21 +68,21 @@ export default class BinaryProtocol {
 
         const parseUpdates = view => {
             const type = 'updates';
-            const bodiesSize = view.getInt32(byteSize);
-            const bodies = Array(bodiesSize).fill(0).map((_, i) =>
-                parseObject(view, byteSize + intSize + i * objectSize)
-            )
-            const bulletsSize = view.getInt32(byteSize + intSize + bodiesSize * objectSize);
-            const bullets = Array(bulletsSize).fill(0).map((_, i) =>
-                parseObject(view, byteSize + intSize * 2 + (bodiesSize + i) * objectSize)
-            )
-            const doorsSize = view.getInt32(byteSize + intSize * 2 + (bodiesSize + bulletsSize) * objectSize);
-            const doors = Array(doorsSize).fill(0).map((_, i) =>
-                parseObject(view, byteSize + intSize * 3 + (bodiesSize + bulletsSize + i) * objectSize)
-            )
-            const playerSize = view.getInt32(byteSize + intSize * 3 + (bodiesSize + bulletsSize + doorsSize) * objectSize);
-            const player = Array(playerSize).fill(0).map((_, i) =>
-                parsePlayer(view, byteSize + intSize * 4 + (bodiesSize + doorsSize + bulletsSize + i) * objectSize)
+            const bodiesLength = view.getInt32(byteSize);
+            const bodies = Array(bodiesLength).fill(0).map((_, i) =>
+                parsePlayer(view, byteSize + intSize + i * playerMessageSize)
+            );
+            const bulletsLength = view.getInt32(byteSize + intSize + bodiesLength * playerMessageSize);
+            const bullets = Array(bulletsLength).fill(0).map((_, i) =>
+                parseObject(view, byteSize + intSize * 2 + i * objectSize + bodiesLength * playerMessageSize)
+            );
+            const doorsLength = view.getInt32(byteSize + intSize * 2 + bulletsLength * objectSize + bodiesLength * playerMessageSize);
+            const doors = Array(doorsLength).fill(0).map((_, i) =>
+                parseObject(view, byteSize + intSize * 3 + (bulletsLength + i) * objectSize + bodiesLength * playerMessageSize)
+            );
+            const playerLength = view.getInt32(byteSize + intSize * 3 + (bulletsLength + doorsLength) * objectSize + bodiesLength * playerMessageSize);
+            const player = Array(playerLength).fill(0).map((_, i) =>
+                parsePlayer(view, byteSize + intSize * 4 + (doorsLength + bulletsLength) * objectSize + (bodiesLength + i) * playerMessageSize)
             )[0];
             return {type, doors, bullets, player, bodies};
         };

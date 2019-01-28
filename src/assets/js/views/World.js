@@ -64,8 +64,22 @@ export default class World {
 
       this.resize(viewSettings);
 
-      this.addBody = ({x, y, angle}, isPlayer) => {
-          const {texture} = this.resources.body;
+      const bodyTextureForWeapon = weapon => {
+          switch (weapon) {
+              case 'shotgun':
+                  return this.resources.shotgunBody;
+              case 'pistol':
+                  return this.resources.pistolBody;
+              case 'riffle':
+                  return this.resources.riffleBody;
+              default:
+                  return this.resources.unarmedBody;
+          }
+      }
+
+      this.addBody = ({x, y, angle, weapon}, isPlayer) => {
+          console.log(weapon);
+          const {texture} = bodyTextureForWeapon(weapon);
           const body = new Body({texture, x, y, angle});
           if (isPlayer) {
               body.setPlayer()
@@ -98,8 +112,11 @@ export default class World {
 
       this.initLoader = () => {
           this.loader = PIXI.loader;
-          const {body, wall, bullet, door} = textures;
-          this.loader.add('body', body);
+          const {pistolBody, shotgunBody, riffleBody, unarmedBody, wall, bullet, door} = textures;
+          this.loader.add('pistolBody', pistolBody);
+          this.loader.add('shotgunBody', shotgunBody);
+          this.loader.add('riffleBody', riffleBody);
+          this.loader.add('unarmedBody', unarmedBody);
           this.loader.add('wall', wall);
           this.loader.add('bullet', bullet);
           this.loader.add('door', door);
