@@ -50,8 +50,8 @@ const viewSettings  = {
     height: window.innerHeight - 20,
     transparent: true
 }
-// const protocol = new BinaryProtocol();
-const protocol = new JsonProtocol();
+const protocol = new BinaryProtocol();
+// const protocol = new JsonProtocol();
 const defaultName = 'huy';
 export {
     wallSpriteDefaults,
