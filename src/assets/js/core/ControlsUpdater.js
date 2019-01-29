@@ -6,7 +6,7 @@ export default class ControlsUpdater {
         this.timeout = timeout;
 
         this.update = () => {
-            const {up, down, left, right, click, angle} = this.controlsRegistry.flush();
+            const {up, down, left, right, click, space, angle} = this.controlsRegistry.flush();
 
             const messageToSend = {
                 type: 'controls',
@@ -15,6 +15,7 @@ export default class ControlsUpdater {
                 down,
                 left,
                 right,
+                space,
                 click
             };
             this.socketControl.push(messageToSend);

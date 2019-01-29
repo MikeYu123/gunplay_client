@@ -10,16 +10,21 @@ const keyUp = 38;
 const keyLeft = 37;
 const keyDown = 40;
 const keyRight = 39;
+const keySpace = 32;
 
 //TODO resolve name confusion(keyUp & onKeyUp)
 export default class KeyControlsRegisgtry {
   constructor({centerX, centerY}) {
     this.centerY = centerY;
     this.centerX = centerX;
-    this.up = this.down = this.right = this.left = this.click = false;
+    this.up = this.down = this.right = this.left = this.click = this.space = false;
     this.angle = 0;
 
-    this.onClick = () => {
+    this.onMouseUp = () => {
+        this.click = false;
+    };
+
+    this.onMouseDown = () => {
         this.click = true;
     };
 
@@ -40,6 +45,9 @@ export default class KeyControlsRegisgtry {
             case keyD:
             case keyRight:
                 this.right = false;
+                break;
+            case keySpace:
+                this.space = false;
                 break;
         }
     };
@@ -62,6 +70,9 @@ export default class KeyControlsRegisgtry {
             case keyRight:
                 this.right = true;
                 break;
+            case keySpace:
+                this.space = true;
+                break;
         }
     };
 
@@ -77,16 +88,15 @@ export default class KeyControlsRegisgtry {
     }
 
     this.flush = () => {
-        const state = {
+        return {
             up: this.up,
             down: this.down,
             left: this.left,
             right: this.right,
             click: this.click,
+            space: this.space,
             angle: this.angle
         };
-        this.click = false;
-        return state;
     }
   }
 }

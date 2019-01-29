@@ -34,7 +34,8 @@ export default class Game {
                 const controlsRegistry = new ControlsRegistry({centerX: world.centerX, centerY: world.centerY});
                 window.onkeydown = controlsRegistry.onKeyDown;
                 window.onkeyup = controlsRegistry.onKeyUp;
-                window.onclick = controlsRegistry.onClick;
+                window.onmousedown = controlsRegistry.onMouseDown;
+                window.onmouseup = controlsRegistry.onMouseUp;
                 window.onmousemove = controlsRegistry.onDocumentMouseMove;
                 return controlsRegistry;
             }

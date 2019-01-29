@@ -11,6 +11,6 @@ export default class Drop {
     this.sprite = new Sprite(texture);
     Object.assign(this.sprite, dropSpriteDefaults);
     Object.assign(this.sprite.position, {x, y});
-    this.sprite.rotation = Math.PI / 2;
+    this.sprite.rotation = 0;
   }
 }

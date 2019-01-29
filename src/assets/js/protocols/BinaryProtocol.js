@@ -133,7 +133,8 @@ export default class BinaryProtocol {
                 (message.down ? 2 : 0) +
                 (message.right ? 4 : 0) +
                 (message.left ? 8 : 0) +
-                (message.click ? 16 : 0);
+                (message.click ? 16 : 0) +
+                (message.space ? 32 : 0);
             //Set type id
             view.setUint8(0, 2);
             //Set controls
