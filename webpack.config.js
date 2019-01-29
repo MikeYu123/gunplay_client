@@ -1,90 +1,37 @@
-const webpack = require('webpack');
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const extractCSS = new ExtractTextPlugin('assets/styles/[name].bundle.css');
-const postCSSOptions  = require('./postcss.config.js');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const extractCommons = new webpack.optimize.CommonsChunkPlugin({
-    name: 'commons',
-    filename: 'assets/js/commons.js'
-});
-
-const config = {
-    context: path.resolve(__dirname, 'src'),
-    entry: {
-        index: './index.js',
-        uikit: './uikit.js',
-        contact: './contact.js'
+module.exports = {
+    devServer: {
+        contentBase: './dist'
     },
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'assets/js/[name].bundle.js'
-    },
+    plugins: [
+        new CleanWebpackPlugin(['dist']),
+        new HtmlWebpackPlugin({title: 'GunPlay 3.0'})
+    ],
     module: {
-        rules: [
+        rules: [{
+            test: /\.scss$/,
+            use: [
+                'style-loader', // creates style nodes from JS strings
+                'css-loader', // translates CSS into CommonJS
+                'sass-loader' // compiles Sass to CSS, using Node Sass by default
+            ]
+        },
             {
-                test: /\.js$/,
-                include: path.resolve(__dirname, 'src'),
-                use: [{
-                    loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            ['es2015', { modules: false }]
-                        ]
-                    }
-                }]
-            },
-            {
-                test: /\.scss$/,
-                loader: extractCSS.extract([
-                    {
-                        loader: 'css-loader'
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: postCSSOptions
-                    },
-                    {
-                        loader: 'sass-loader'
-                    }
-                ])
-            },
-
-            {
-                test: /\.(png|jpg)$/,
-                use: [{
-                    loader: 'file-loader?name=assets/images/[name].[ext]'
-                }]
-            },
-            {
-                test: /(^-partial)?\.html$/,
+                test: /\.css$/,
+                use: [
+                    {loader: 'style-loader'},
+                    {loader: 'css-loader'}
+                ]
+            }, {
+                test: /\.(png|jpg|gif)$/,
                 use: [
                     {
                         loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]'
-                        }
-                    },
-                    {
-                        loader: 'extract-loader'
-                    },
-                    {
-                        loader: 'html-loader',
-                        options: {
-                            interpolate: true,
-                            attrs: ['img:src']
-                        }
+                        options: {}
                     }
                 ]
-            }
-
-        ]
-    },
-    plugins: [
-        new webpack.NamedModulesPlugin(),
-        extractCSS,
-        extractCommons
-    ]
+            }]
+    }
 };
-
-module.exports = config;
