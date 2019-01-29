@@ -1,8 +1,10 @@
 import LeaderBoard from '../views/Leaderboard'
+import Weapon from '../views/Weapon'
 import {debounce} from '../utils/debounce'
 import {leaderboardDefaults} from '../configs/application';
 
-const LeadBoard = new LeaderBoard( {host: window.document.documentElement});
+const leadBoard = new LeaderBoard( {host: window.document.documentElement});
+const weapon = new Weapon( {host: window.document.documentElement});
 export default class WorldUpdater {
     constructor({ world, player }) {
         this.world = world;
@@ -30,10 +32,11 @@ export default class WorldUpdater {
                             this.world.addBody(player, true);
                             this.world.resetCenter(player);
                         }
+                        weapon.update(player);
                         this.world.refresh();
                         break;
                     case 'leaderboard':
-                        debounce(LeadBoard.update(message.leaderboard), leaderboardDefaults.debounce.timeout);
+                        debounce(leadBoard.update(message.leaderboard), leaderboardDefaults.debounce.timeout);
                         break;
                     case 'registered':
                         this.player.uuid = message.id;

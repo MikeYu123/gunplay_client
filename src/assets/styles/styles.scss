@@ -29,6 +29,16 @@
     }
   }
 }
+.weaponry{
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 350px;
+  padding: 10px;
+  background-color: rgba(224, 255, 255, 0.5);
+  border: 1px solid lightseagreen;
+  user-select: none;
+}
 .nippleContainer {
   position: absolute;
   width: 50%;
