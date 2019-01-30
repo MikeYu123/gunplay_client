@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const {DefinePlugin} = require('webpack')
 
 module.exports = {
     devServer: {
@@ -7,7 +8,11 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),
-        new HtmlWebpackPlugin({title: 'GunPlay 3.0'})
+        new HtmlWebpackPlugin({title: 'GunPlay 3.0'}),
+        new DefinePlugin({
+            BACKEND_WS: JSON.stringify(process.env.BACKEND_WS || 'ws://192.168.46.145:8090'),
+            BACKEND_API: JSON.stringify(process.env.BACKEND_API || 'http://localhost:8090')
+        })
     ],
     module: {
         rules: [{

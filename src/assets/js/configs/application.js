@@ -35,8 +35,8 @@ const textures = {
 //     api: 'http://192.168.46.145:8090'
 // };
 const backend = {
-    ws: 'ws://localhost:8090',
-    api: 'http://localhost:8090'
+    ws: BACKEND_WS,
+    api: BACKEND_API
 };
 const controlsUpdaterSettings = {
     timeout: 70
