@@ -4,7 +4,7 @@
   "description": "generator for frontend apps built on webpack",
   "main": "src/index.js",
   "scripts": {
-    "start": "webpack-dev-server --open",
+    "start": "webpack-dev-server --open --host 0.0.0.0",
     "lint": "./node_modules/.bin/eslint src/*.js",
     "build": "webpack -p"
   },
