@@ -1,5 +1,5 @@
 import World from '../views/World'
-import {textures, backend, controlsUpdaterSettings, defaultName, protocol, viewSettings} from '../configs/application';
+import {textures, backend, controlsUpdaterSettings, defaultName, protocol, viewSettings, shakeThreshold} from '../configs/application';
 import Player from './Player'
 import ControlsRegistry from '../controls/KeyControlsRegistry'
 import NippleControlsRegistry from '../controls/NippleControlsRegistry'
@@ -8,6 +8,7 @@ import ControlsUpdater from './ControlsUpdater';
 import WorldUpdater from './WorldUpdater';
 import nipplejs from 'nipplejs';
 import Hammer from 'hammerjs'
+import Shake from 'shake.js'
 
 export default class Game {
     constructor(name = defaultName, mobile = false, level = 0){
@@ -23,15 +24,16 @@ export default class Game {
                 const div3 = document.createElement('div');
                 div3.id = 'angleAndShotManager';
                 div3.className = 'nippleContainer';
-                document.body.appendChild(div1)
-                document.body.appendChild(div3)
-                document.body.appendChild(div2)
-                const dropWeaponButton = new Hammer.Manager(div1);
-                dropWeaponButton.add(new Hammer.Tap({ event: 'doubletap', taps: 2 }));
-                const directionManager = nipplejs.create({size: 150,color: 'black', zone: div1, mode: 'static', position: {top: '60%', left: '20%'}});
+                document.body.appendChild(div1);
+                document.body.appendChild(div3);
+                document.body.appendChild(div2);
+                const shakeDrop = new Shake({threshold: shakeThreshold});
+                const doubleTapDrop = new Hammer.Manager(document.body);
+                doubleTapDrop.add(new Hammer.Tap({ event: 'doubletap', taps: 2 }));
+                const directionManager = nipplejs.create({size: 150,color: 'black', zone: div1, mode: 'static', position: {top: '40%', left: '20%'}});
                 const angleManager = nipplejs.create({size: 150, color: 'black', zone: div2, mode: 'static', position: {top: '50%', right: '20%'}});
                 const angleAndShotManager = nipplejs.create({size: 150, color: 'black', zone: div3, mode: 'static', position: {bottom: '50%', right: '20%'}});
-                return new NippleControlsRegistry({directionManager, angleManager, angleAndShotManager, dropWeaponButton});
+                return new NippleControlsRegistry({directionManager, angleManager, angleAndShotManager, doubleTapDrop, shakeDrop});
             }
             else {
                 const controlsRegistry = new ControlsRegistry({centerX: world.centerX, centerY: world.centerY});

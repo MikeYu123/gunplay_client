@@ -52,6 +52,7 @@ const viewSettings  = {
 }
 const protocol = new BinaryProtocol();
 // const protocol = new JsonProtocol();
+const shakeThreshold = 2;
 const defaultName = 'huy';
 export {
     wallSpriteDefaults,
@@ -67,5 +68,6 @@ export {
     protocol,
     viewSettings,
     nippleControlsSettings,
-    dropSpriteDefaults
+    dropSpriteDefaults,
+    shakeThreshold
 };

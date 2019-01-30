@@ -4,17 +4,18 @@
 
 import {debounce} from '../utils/debounce'
 import {nippleControlsSettings} from '../configs/application';
-import Hammer from 'hammerjs'
 const {timeout} = nippleControlsSettings;
 
 
 //TODO resolve name confusion(keyUp & onKeyUp)
 export default class NippleControlsRegistry {
-    constructor({directionManager, angleManager, angleAndShotManager, dropWeaponButton}) {
+    constructor({directionManager, angleManager, angleAndShotManager, doubleTapDrop, shakeDrop}) {
         this.directionManager = directionManager;
         this.angleManager = angleManager;
         this.angleAndShotManager = angleAndShotManager;
-        this.dropWeaponButton = dropWeaponButton;
+        this.doubleTapDrop = doubleTapDrop;
+        this.shakeDrop = shakeDrop;
+        this.shakeDrop.start();
         this.up = this.down = this.right = this.left = this.space = this.click = false;
         this.angle = 0;
 
@@ -25,8 +26,11 @@ export default class NippleControlsRegistry {
             this.left = 120 < degree && degree <= 240;
         };
 
-        this.dropWeaponButton.on('doubletap', (e) => {
-            // console.log(e)
+        this.doubleTapDrop.on('doubletap', (e) => {
+            this.space = true;
+        });
+
+        window.addEventListener('shake', () => {
             this.space = true;
         });
 
