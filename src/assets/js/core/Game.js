@@ -7,6 +7,7 @@ import SocketControl from './SocketControl'
 import ControlsUpdater from './ControlsUpdater';
 import WorldUpdater from './WorldUpdater';
 import nipplejs from 'nipplejs';
+import Hammer from 'hammerjs'
 
 export default class Game {
     constructor(name = defaultName, mobile = false, level = 0){
@@ -25,10 +26,12 @@ export default class Game {
                 document.body.appendChild(div1)
                 document.body.appendChild(div3)
                 document.body.appendChild(div2)
+                const dropWeaponButton = new Hammer.Manager(div1);
+                dropWeaponButton.add(new Hammer.Tap({ event: 'doubletap', taps: 2 }));
                 const directionManager = nipplejs.create({size: 150,color: 'black', zone: div1, mode: 'static', position: {top: '60%', left: '20%'}});
                 const angleManager = nipplejs.create({size: 150, color: 'black', zone: div2, mode: 'static', position: {top: '50%', right: '20%'}});
                 const angleAndShotManager = nipplejs.create({size: 150, color: 'black', zone: div3, mode: 'static', position: {bottom: '50%', right: '20%'}});
-                return new NippleControlsRegistry({directionManager, angleManager, angleAndShotManager});
+                return new NippleControlsRegistry({directionManager, angleManager, angleAndShotManager, dropWeaponButton});
             }
             else {
                 const controlsRegistry = new ControlsRegistry({centerX: world.centerX, centerY: world.centerY});
