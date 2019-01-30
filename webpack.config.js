@@ -14,6 +14,9 @@ module.exports = {
             BACKEND_API: JSON.stringify(process.env.BACKEND_API || 'http://192.168.46.145:8090')
         })
     ],
+    output: {
+        filename: '[name].[contenthash].js'
+    },
     module: {
         rules: [{
             test: /\.scss$/,
@@ -38,5 +41,6 @@ module.exports = {
                     }
                 ]
             }]
+
     }
 };
