@@ -1,31 +1,37 @@
-@import 'base/variables';
-@import 'base/base';
-
+//@import 'base/variables';
+//@import 'base/base';
+@font-face {
+  font-family: '8bit';
+  src: url('../fonts/8bitcyrillic.ttf') format('truetype')
+}
 
 *{
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 14px;
+  //font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-family: '8bit';
+  font-size: 18pt;
 }
 
 .leaderboard{
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 450px;
-  background-color: rgba(224, 255, 255, 0.5);
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.1);
   user-select: none;
-  table{
+  table {
     width: 100%;
-    table-layout: fixed;
+    table-layout: auto;
     border-collapse: collapse;
   }
   td, th{
-    padding: 0 10px;
-    border: 1px solid lightseagreen;
-    line-height: 2;
+    padding: 0 5px;
+    border: 2px solid black;
+    line-height: 1.2;
+    width: 50px;
     &.name{
+      text-align: left;
       font-weight: bold;
-      width: 40%;
+      width: 200px;
     }
   }
 }
@@ -33,17 +39,27 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
-  width: 350px;
-  padding: 10px;
-  background-color: rgba(224, 255, 255, 0.5);
-  border: 1px solid lightseagreen;
+  width: 200px;
+  padding: 0px 5px;
+  background-color: rgba(0, 0, 0, 0.1);
+  line-height: 1;
+  *{
+    margin: 5px;
+  }
+  h2 {
+    font-size: 20pt;
+  }
+  p {
+    font-size: 16pt;
+  }
+  border: 2px solid black;
   user-select: none;
 }
 .nippleContainer {
   position: absolute;
   width: 50%;
   height: 100%;
-  top: 0%
+  top: 0%;
 }
 #directionManager {
   left: 00%

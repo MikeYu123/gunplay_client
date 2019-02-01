@@ -4,8 +4,8 @@
         this.render = () => {
             this.el = document.createElement('div');
             this.table = document.createElement('table');
-            Object.assign(this.el.style, {width: '200px'});
-            Object.assign(this.table.style, {width: '200px'});
+            // Object.assign(this.el.style, {width: '250px'});
+            // Object.assign(this.table.style, {width: '200px'});
 
             this.el.className = 'leaderboard';
 
@@ -23,7 +23,7 @@
         this.update = data => {
             clean();
             this.table.innerHTML += "<theader><tr>" +
-                "<th>Name</th>" +
+                "<th class='name'>Name</th>" +
                 "<th>Kills</th> " +
                 "<th>Deaths</th> " +
                 "</tr></theader>"

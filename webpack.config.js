@@ -33,14 +33,24 @@ module.exports = {
                     {loader: 'css-loader'}
                 ]
             }, {
-                test: /\.(png|jpg|gif)$/,
+                test: /\.(png|jpg|gif|eot|svg)$/,
                 use: [
                     {
                         loader: 'file-loader',
                         options: {}
                     }
                 ]
-            }]
+            },
+            {
+                test: /\.(ttf|woff|woff2)$/,
+                use: [
+                    {
+                        loader: 'file-loader'
+                    }
+
+                ]
+            }
+        ]
 
     }
 };
