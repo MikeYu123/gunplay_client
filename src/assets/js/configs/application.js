@@ -34,6 +34,7 @@ const textures = {
 //     ws: 'ws://192.168.46.145:8090',
 //     api: 'http://192.168.46.145:8090'
 // };
+// noinspection JSUnresolvedVariable
 const backend = {
     ws: BACKEND_WS,
     api: BACKEND_API
@@ -49,7 +50,7 @@ const viewSettings  = {
     width: window.innerWidth - 20,
     height: window.innerHeight - 20,
     transparent: true
-}
+};
 const protocol = new BinaryProtocol();
 // const protocol = new JsonProtocol();
 const shakeThreshold = 2;
