@@ -2,8 +2,8 @@ FROM node:10.19.0-jessie as build-stage
 
 WORKDIR /scripts
 
-#ENV BACKEND_WS 'ws://localhost:15001'
-#ENV BACKEND_API 'http://localhost:15001'
+ENV BACKEND_WS 'ws://157.245.70.82:15001'
+ENV BACKEND_API 'http://157.245.70.82:15001'
 
 COPY package.json /scripts
 
