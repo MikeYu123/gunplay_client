@@ -10,8 +10,8 @@ module.exports = {
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({title: 'GunPlay 3.0'}),
         new DefinePlugin({
-            BACKEND_WS: JSON.stringify(process.env.BACKEND_WS || 'ws://192.168.46.145:8090'),
-            BACKEND_API: JSON.stringify(process.env.BACKEND_API || 'http://192.168.46.145:8090')
+            BACKEND_WS: JSON.stringify(process.env.BACKEND_WS || 'ws://157.245.70.82/server'),
+            BACKEND_API: JSON.stringify(process.env.BACKEND_API || 'http://157.245.70.82/server')
         })
     ],
     output: {
