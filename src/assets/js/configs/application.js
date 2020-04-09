@@ -38,7 +38,7 @@ const textures = {
 const backend = {
     // ws: BACKEND_WS,
     ws: `ws://${window.location.hostname}/server`,
-    api: `http://${window.location.hostname}/server`
+    api: `http://${window.location.hostname}/api`
     // api: BACKEND_API
 };
 const controlsUpdaterSettings = {
