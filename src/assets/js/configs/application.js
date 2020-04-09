@@ -36,8 +36,10 @@ const textures = {
 // };
 // noinspection JSUnresolvedVariable
 const backend = {
-    ws: BACKEND_WS,
-    api: BACKEND_API
+    // ws: BACKEND_WS,
+    ws: `ws://${window.location.hostname}`,
+    api: `htto://${window.location.hostname}/server`
+    // api: BACKEND_API
 };
 const controlsUpdaterSettings = {
     timeout: 70
