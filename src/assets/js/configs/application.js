@@ -37,7 +37,7 @@ const textures = {
 // noinspection JSUnresolvedVariable
 const backend = {
     // ws: BACKEND_WS,
-    ws: `ws://${window.location.hostname}/server`,
+    ws: `ws://${window.location.hostname}/server/`,
     api: `http://${window.location.hostname}/api`
     // api: BACKEND_API
 };
